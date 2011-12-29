@@ -1,0 +1,2 @@
+#!/bin/bash
+wget http://download.wikimedia.org/enwiktionary/latest/enwiktionary-latest-pages-articles.xml.bz2

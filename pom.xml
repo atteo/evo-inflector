@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.atteo</groupId>
+		<artifactId>evo-framework</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>evo-inflector</artifactId>
+	<name>Evo Inflector</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
+
