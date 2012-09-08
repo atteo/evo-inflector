@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.atteo</groupId>
 	<artifactId>evo-inflector</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>Evo Inflector</name>
 	<description>
 		Java application development framework focusing on configurability and easy testing.
