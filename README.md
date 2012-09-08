@@ -7,7 +7,7 @@ The tests performed (December 2011) based on data from [Wiktionary](http://dumps
 
 Words checked: 108774 (979 basic words)
 Correct: 69.92112% (100.0% basic words)
-(If you are curious this test is part of the [unit tests](http://code.google.com/p/evo-framework/source/browse/inflector/src/test/java/org/atteo/evo/inflector/EnglishInflectorTest.java).)
+(If you are curious this test is part of the [unit tests](https://github.com/sentinelt/evo-inflector/blob/master/src/test/java/org/atteo/evo/inflector/EnglishInflectorTest.java).)
 
 Usage
 =====
@@ -19,13 +19,13 @@ System.out.println(English.plural("word")); // == "words"
 Download
 ========
 
-You can download the library from [here](http://search.maven.org/remotecontent?filepath=org/atteo/evo-inflector/0.6/evo-inflector-0.6.jar) or use the following Maven dependency:
+You can download the library from [here](http://search.maven.org/remotecontent?filepath=org/atteo/evo-inflector/1.0/evo-inflector-1.0.jar) or use the following Maven dependency:
 
 ```xml
 <dependency>
     <groupid>atteo.org</groupid>
     <artifactid>evo-inflector</artifactid>
-    <version>0.6</version>
+    <version>1.0</version>
 </dependency>
 ```
 
