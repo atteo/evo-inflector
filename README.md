@@ -23,7 +23,7 @@ You can download the library from [here](http://search.maven.org/remotecontent?f
 
 ```xml
 <dependency>
-    <groupid>atteo.org</groupid>
+    <groupid>org.atteo</groupid>
     <artifactid>evo-inflector</artifactid>
     <version>1.0</version>
 </dependency>
