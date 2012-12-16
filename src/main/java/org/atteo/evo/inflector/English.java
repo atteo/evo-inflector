@@ -16,9 +16,12 @@ package org.atteo.evo.inflector;
 /**
  * Transforms English words from singular to plural form.
  * <p>
- * Example:
+ * Examples:
  * <pre>
- *    English.plural("word")
+ *    English.plural("word") = "words";
+ *
+ *    English.plural("cat", 1) = "cat";
+ *    English.plural("cat", 2) = "cats";
  * </pre>
  * </p>
  * <p>
@@ -30,7 +33,7 @@ public class English extends TwoFormInflector {
 	public static enum MODE {
 		ENGLISH_ANGLICIZED, ENGLISH_CLASSICAL
 	}
-	
+
 	private static final String[] CATEGORY_EX_ICES = { "codex", "murex",
 			"silex", };
 
@@ -42,7 +45,7 @@ public class English extends TwoFormInflector {
 
 	// Always us -> i
 	private static final String[] CATEGORY_US_I = { "alumnus", "alveolus",
-			"bacillus", "bronchus", "locus", "nucleus", "stimulus", "meniscus", 
+			"bacillus", "bronchus", "locus", "nucleus", "stimulus", "meniscus",
 			"thesaurus", };
 
 	private static final String[] CATEGORY_ON_A = { "criterion",
@@ -60,16 +63,16 @@ public class English extends TwoFormInflector {
 			"pro", "quarto", "canto", "lingo", "generalissimo", "stylo",
 			"rhino", "casino", "auto", "macro", "zero",
 	};
-	
+
 	// Classical o -> i  (normally -> os)
 	private static final String[] CATEGORY_O_I = {
 			"solo", "soprano", "basso", "alto", "contralto", "tempo", "piano",
 			"virtuoso", };
-	
+
 	private static final String[] CATEGORY_EN_INA = {
 			"stamen", "foramen", "lumen"
 	};
-	
+
 	// -a to -as (anglicized) or -ata (classical)
 	private static final String[] CATEGORY_A_ATA = {
 			"anathema", "enema", "oedema", "bema", "enigma", "sarcoma",
@@ -77,21 +80,21 @@ public class English extends TwoFormInflector {
 			"diploma", "lymphoma", "stigma", "dogma", "magma", "stoma",
 			"drama", "melisma", "trauma", "edema", "miasma"
 	};
-	
+
 	private static final String[] CATEGORY_IS_IDES = {
 			"iris", "clitoris"
 	};
-	
+
 	// -us to -uses (anglicized) or -us (classical)
 	private static final String[] CATEGORY_US_US = {
 			"apparatus", "impetus", "prospectus", "cantus", "nexus", "sinus", "coitus",
 			"plexus", "status", "hiatus"
 	};
-	
+
 	private static final String[] CATEGORY_NONE_I = {
 		"afreet", "afrit", "efreet"
 	};
-	
+
 	private static final String[] CATEGORY_NONE_IM = {
 		"cherub", "goy", "seraph"
 	};
@@ -110,21 +113,21 @@ public class English extends TwoFormInflector {
 		"digitalis", "metropolis", "atlas", "epidermis", "pathos",
 		"bathos", "ethos", "pelvis", "bias", "gas", "polis", "caddis",
 		"glottis", "rhinoceros", "cannabis", "glottis", "sassafras",
-		"canvas", "ibis", "trellis" 
+		"canvas", "ibis", "trellis"
 	};
 
 	private static final String[] CATEGORY_MAN_MANS = {
 		"human", "Alabaman", "Bahaman", "Burman", "German", "Hiroshiman", "Liman", "Nakayaman", "Oklahoman",
 		"Panaman", "Selman", "Sonaman", "Tacoman", "Yakiman", "Yokohaman", "Yuman"
 	};
-	
+
 	private static English inflector = new English();
 
 
 	public English() {
 		this(MODE.ENGLISH_ANGLICIZED);
 	}
-	
+
 	public English(MODE mode) {
 		// 2. Handle words that do not inflect in the plural (such as fish, travois, chassis, nationalities ending
 		// in -ese etc.
@@ -143,7 +146,7 @@ public class English extends TwoFormInflector {
 
 		// 4. Handle standard irregular plurals (mongooses, oxen, etc.)
 
-		irregular(new String[][] { 
+		irregular(new String[][] {
 				{ "child", "children" }, // classical
 				{ "ephemeris", "ephemerides" }, // classical
 				{ "mongoose", "mongoose" }, // anglicized
@@ -158,20 +161,20 @@ public class English extends TwoFormInflector {
 
 		if (mode == MODE.ENGLISH_ANGLICIZED) {
 			// Anglicized plural
-			irregular(new String[][] { 
+			irregular(new String[][] {
 					{ "beef", "beefs" },
-					{ "brother", "brothers" }, 
+					{ "brother", "brothers" },
 					{ "cow", "cows" },
-					{ "genie", "genies" }, 
+					{ "genie", "genies" },
 					{ "money", "moneys" },
 					{ "octopus", "octopuses" },
 					{ "opus", "opuses" },
 				});
 		} else if (mode == MODE.ENGLISH_CLASSICAL) {
 			// Classical plural
-			irregular(new String[][] { { "beef", "beeves"}, 
+			irregular(new String[][] { { "beef", "beeves"},
 					{ "brother", "brethren" },
-					{ "cos", "kine" }, { "genie", "genii"}, 
+					{ "cos", "kine" }, { "genie", "genii"},
 					{ "money", "monies" },
 					{ "octopus", "octopodes" },
 					{ "opus", "opera" },
@@ -179,7 +182,7 @@ public class English extends TwoFormInflector {
 		}
 
 		categoryRule(CATEGORY_MAN_MANS, "(.*)$", "$1s");
-		
+
 		// questionable
 		/*
 		 rule(new String[][] {
@@ -188,18 +191,18 @@ public class English extends TwoFormInflector {
 				{ "(icity)$", "$1" },
 				{ "(ivity)$", "$1" },
 		});
-		 */	
+		 */
 		// 5. Handle irregular inflections for common suffixes
-		rule(new String[][] { 
-				{ "man$", "men" }, 
+		rule(new String[][] {
+				{ "man$", "men" },
 				{ "([lm])ouse$", "$1ice" },
-				{ "tooth$", "teeth" }, 
+				{ "tooth$", "teeth" },
 				{ "goose$", "geese" },
-				{ "foot$", "feet" }, 
+				{ "foot$", "feet" },
 				{ "zoon$", "zoa" },
-				{ "([csx])is$", "$1es" }, 
+				{ "([csx])is$", "$1es" },
 		});
-		
+
 		// 6. Handle fully assimilated classical inflections
 		categoryRule(CATEGORY_EX_ICES, "(.*)ex$", "$1ices");
 		categoryRule(CATEGORY_IX_ICES, "(.*)ix$", "$1ices");
@@ -226,27 +229,27 @@ public class English extends TwoFormInflector {
 			categoryRule(CATEGORY_IX_IXES, "(.*)ix$", "$1ices");
 		}
 
-		categoryRule(CATEGORY_US_I, "(.*)us$", "$1i");		
-		
+		categoryRule(CATEGORY_US_I, "(.*)us$", "$1i");
+
 		rule("([cs]h|[zx])$", "$1es");
 		categoryRule(CATEGORY_S_ES, "(.*)$", "$1es");
 		categoryRule(CATEGORY_IS_IDES, "(.*)$", "$1es");
 		categoryRule(CATEGORY_US_US, "(.*)$", "$1es");
 		categoryRule(CATEGORY_A_ATA, "(.*)$", "$1s");
-		
+
 		// The suffixes -ch, -sh, and -ss all take -es in the plural (churches,
 		// classes, etc)...
 		rule(new String[][] { { "([cs])h$", "$1hes" }, { "ss$", "sses" } });
-		
+
 		// Certain words ending in -f or -fe take -ves in the plural (lives,
 		// wolves, etc)...
-		rule(new String[][] { 
+		rule(new String[][] {
 				{ "([aeo]l)f$", "$1ves" },
-				{ "([^d]ea)f$", "$1ves" }, 
+				{ "([^d]ea)f$", "$1ves" },
 				{ "(ar)f$", "$1ves" },
-				{ "([nlw]i)fe$", "$1ves" } 
+				{ "([nlw]i)fe$", "$1ves" }
 		});
-		
+
 		// Words ending in -y take -ys
 		rule(new String[][] { { "([aeiou])y$", "$1ys" }, { "y$", "ies" }, });
 
@@ -256,17 +259,74 @@ public class English extends TwoFormInflector {
 		rule("([aeiou])o$", "$1os");
 		// The rest take -oes
 		rule("o$", "oes");
-		
+
 		categoryRule(CATEGORY_A_ATA, "(.*)$", "$1es");
-		
+
 		// Otherwise, assume that the plural just adds -s
 		rule("(.*)$", "$1s");
 	}
-	
+
+	/**
+	 * Returns plural form of the given word.
+	 *
+	 * @param word word in singular form
+	 * @return plural form of the word
+	 */
+	@Override
+	public String getPlural(String word) {
+		return super.getPlural(word);
+	}
+
+	/**
+	 * Returns singular or plural form of the word based on count.
+	 *
+	 * @param word word in singular form
+	 * @param count word count
+	 * @return form of the word correct for given count
+	 */
+	public String getPlural(String word, int count) {
+		if (count == 1) {
+			return word;
+		}
+		return getPlural(word);
+	}
+
+	/**
+	 * Returns plural form of the given word.
+	 * <p>
+	 * For instance:
+	 * <pre>
+	 * {@code
+	 * English.plural("cat") == "cats";
+	 * }
+	 * </pre>
+	 * </p>
+	 * @param word word in singular form
+	 * @return plural form of given word
+	 */
 	public static String plural(String word) {
 		return inflector.getPlural(word);
 	}
-	
+
+	/**
+	 * Returns singular or plural form of the word based on count.
+	 * <p>
+	 * For instance:
+	 * <pre>
+	 * {@code
+	 * English.plural("cat", 1) == "cat";
+	 * English.plural("cat", 2) == "cats";
+	 * }
+	 * </pre>
+	 * </p>
+	 * @param word word in singular form
+	 * @param count word count
+	 * @return form of the word correct for given count
+	 */
+	public static String plural(String word, int count) {
+		return inflector.getPlural(word, count);
+	}
+
 	public static void setMode(MODE mode) {
 		English newInflector = new English(mode);
 		inflector = newInflector;

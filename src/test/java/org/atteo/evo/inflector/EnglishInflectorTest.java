@@ -30,7 +30,7 @@ import org.junit.Test;
 
 public class EnglishInflectorTest {
 	private English inflector = new English();
-	
+
 	@Test
 	public void wiktionaryList() throws IOException {
 		InputStream compressedStream = EnglishInflectorTest.class.getResourceAsStream(
@@ -49,7 +49,7 @@ public class EnglishInflectorTest {
 		compressedStream.read();
 		InputStream stream = new CBZip2InputStream(compressedStream);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		
+
 		// Pattern find word name
 		Pattern titlePattern = Pattern.compile("<title>([a-z]+)</title>");
 		// Pattern to find beginning of wiki text
@@ -58,10 +58,10 @@ public class EnglishInflectorTest {
 		Pattern rankPattern = Pattern.compile("\\{\\{rank");
 		// Pattern to find noun definition
 		Pattern enNounPattern = Pattern.compile("\\{\\{en-noun([a-z0-9\\|\\-\\[\\]\\?\\!=]*)\\}\\}");
-		
+
 		Pattern plPattern = Pattern.compile("pl(\\d)?=(.+)");
 		Pattern wordPattern = Pattern.compile("([a-z]+)");
-		
+
 		String line;
 		String word = "";
 		int text = 0;
@@ -102,7 +102,7 @@ public class EnglishInflectorTest {
 				String[] rules = enNounMatcher.group(1).split("\\|");
 				List<String> plurals = new ArrayList<String>();
 				List<String> rules2 = new ArrayList<String>();
-				
+
 				if (rules.length <= 1) {
 					plurals.add(word + "s");
 				}
@@ -127,13 +127,13 @@ public class EnglishInflectorTest {
 						}
 					}
 				}
-				
+
 				if (rules2.size() == 1) {
 					plurals.add(rules2.get(0));
 				} else if (rules2.size() == 2) {
 					plurals.add(rules2.get(0) + rules2.get(1));
 				}
-				
+
 				String calculatedPlural = inflector.getPlural(word);
 				boolean ok = false;
 				for (String plural : plurals) {
@@ -142,7 +142,7 @@ public class EnglishInflectorTest {
 						break;
 					}
 				}
-				
+
 				if (!ok) {
 					wrong++;
 					if (basicWord) {
@@ -155,7 +155,7 @@ public class EnglishInflectorTest {
 		}
 		reader.close();
 		compressedStream.close();
-		
+
 		float correct = (count - wrong)*100/(float)count;
 		float basicCorrect = (basicCount - basicWrong) * 100 / (float)basicCount;
 		System.out.println("Words checked: " + count + " (" + basicCount + " basic words)");
@@ -166,7 +166,7 @@ public class EnglishInflectorTest {
 
 	@Test
 	public void exampleWordList() {
-		check(new String[][] { 
+		check(new String[][] {
 			{ "alga", "algae" },
 			{ "nova", "novas" },
 			{ "dogma", "dogmas" },
@@ -199,13 +199,28 @@ public class EnglishInflectorTest {
 			{ "sugar", "sugar" },
 		});
 	}
-	
+
+	@Test
+	public void withCount() {
+		assertEquals("cat", inflector.getPlural("cat", 1));
+		assertEquals("cats", inflector.getPlural("cat", 2));
+
+		assertEquals("demoness", inflector.getPlural("demoness", 1));
+		assertEquals("demonesses", inflector.getPlural("demoness", 2));
+	}
+
+	@Test
+	public void staticMethods() {
+		assertEquals("sulfimides", English.plural("sulfimide"));
+		assertEquals("semifluids", English.plural("semifluid", 2));
+	}
+
 	private void check(String[][] list) {
 		for (String[] pair : list) {
 			check(pair[0], pair[1]);
 		}
 	}
-	
+
 	private void check(String singular, String plural) {
 		assertEquals(plural, inflector.getPlural(singular));
 	}
