@@ -7,7 +7,7 @@ The tests performed (December 2011) based on data from [Wiktionary](http://dumps
 
 Words checked: 108774 (979 basic words)
 Correct: 69.92112% (100.0% basic words)
-(If you are curious this test is part of the [unit tests](https://github.com/sentinelt/evo-inflector/blob/master/src/test/java/org/atteo/evo/inflector/EnglishInflectorTest.java).)
+(If you are curious this test is part of the [unit tests](https://github.com/atteo/evo-inflector/blob/master/src/test/java/org/atteo/evo/inflector/EnglishInflectorTest.java).)
 
 Changes
 =======

@@ -20,8 +20,8 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:git:https://github.com/sentinelt/evo-inflector.git</connection>
-		<url>https://github.com/sentinelt/evo-inflector</url>
+		<connection>scm:git:https://github.com/atteo/evo-inflector.git</connection>
+		<url>https://github.com/atteo/evo-inflector</url>
 	</scm>
 	<dependencies>
 		<dependency>
