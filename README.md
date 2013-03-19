@@ -27,6 +27,11 @@ System.out.println(English.plural("word", 1)); // == "word"
 System.out.println(English.plural("word", 2)); // == "words"
 ```
 
+License
+=======
+
+Evo Inflector is available under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
 Download
 ========
 
