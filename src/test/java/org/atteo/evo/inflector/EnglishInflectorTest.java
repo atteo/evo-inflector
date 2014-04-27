@@ -103,35 +103,25 @@ public class EnglishInflectorTest {
 				List<String> plurals = new ArrayList<String>();
 				List<String> rules2 = new ArrayList<String>();
 
-				if (rules.length <= 1) {
-					plurals.add(word + "s");
-				}
 				for (String rule : rules) {
-					Matcher matcher = plPattern.matcher(rule);
-					if (matcher.matches()) {
-						if (matcher.group(1) != null && plurals.isEmpty()
-								&& rules2.isEmpty()) {
-							plurals.add(word + "s");
-						}
-						plurals.add(matcher.group(2));
-					} else if ("-".equals(rule)) {
+					if (rule.isEmpty()) {
+						continue;
+					}
+					if ("-".equals(rule)) {
 						plurals.add(word);
 					} else if ("s".equals(rule)) {
 						plurals.add(word + "s");
 					} else if ("es".equals(rule)) {
 						plurals.add(word + "es");
 					} else {
-						matcher = wordPattern.matcher(rule);
+						Matcher matcher = wordPattern.matcher(rule);
 						if (matcher.matches()) {
-							rules2.add(rule);
+							plurals.add(rule);
 						}
 					}
 				}
-
-				if (rules2.size() == 1) {
-					plurals.add(rules2.get(0));
-				} else if (rules2.size() == 2) {
-					plurals.add(rules2.get(0) + rules2.get(1));
+				if (plurals.isEmpty()) {
+					plurals.add(word + "s");
 				}
 
 				String calculatedPlural = inflector.getPlural(word);
@@ -148,8 +138,8 @@ public class EnglishInflectorTest {
 					if (basicWord) {
 						basicWrong++;
 					}
-					//System.out.println(word + " got: " + calculatedPlural + ", but expected "
-					//	+ enNounMatcher.group(1));
+					System.out.println(word + " got: " + calculatedPlural + ", but expected "
+						+ enNounMatcher.group(1));
 				}
 			}
 		}
