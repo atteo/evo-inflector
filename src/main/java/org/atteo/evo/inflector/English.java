@@ -235,6 +235,7 @@ public class English extends TwoFormInflector {
 		categoryRule(CATEGORY_S_ES, "(.*)$", "$1es");
 		categoryRule(CATEGORY_IS_IDES, "(.*)$", "$1es");
 		categoryRule(CATEGORY_US_US, "(.*)$", "$1es");
+		rule("(us)$", "$1es");
 		categoryRule(CATEGORY_A_ATA, "(.*)$", "$1s");
 
 		// The suffixes -ch, -sh, and -ss all take -es in the plural (churches,

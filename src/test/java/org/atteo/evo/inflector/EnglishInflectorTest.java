@@ -187,6 +187,7 @@ public class EnglishInflectorTest {
 			{ "cherub", "cherubs" },
 			{ "human", "humans" },
 			{ "sugar", "sugar" },
+			{ "virus", "viruses" },
 		});
 	}
 
