@@ -188,6 +188,7 @@ public class EnglishInflectorTest {
 			{ "virus", "viruses" },
 			{ "gastrostomy", "gastrostomies" },
 			{ "baculum", "bacula" },
+			{ "pancreas", "pancreases" },
 		});
 	}
 

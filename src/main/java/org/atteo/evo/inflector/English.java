@@ -267,8 +267,9 @@ public class English extends TwoFormInflector {
 
 		categoryRule(CATEGORY_A_ATA, "", "es");
 
+		rule("s$", "ses");
 		// Otherwise, assume that the plural just adds -s
-		rule("(.*)$", "$1s");
+		rule("$", "s");
 	}
 
 	/**
