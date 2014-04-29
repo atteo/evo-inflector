@@ -19,63 +19,83 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class TwoFormInflector {
-	private static class Rule {
-		private Pattern singular;
-		private String plural;
-		private Rule(Pattern singular, String plural) {
+	private interface Rule {
+		String getPlural(String singular);
+	}
+
+	private static class RegExpRule implements Rule {
+		private final Pattern singular;
+		private final String plural;
+
+		private RegExpRule(Pattern singular, String plural) {
 			this.singular = singular;
 			this.plural = plural;
 		}
 
-		public Pattern getSingular() {
-			return singular;
+		@Override
+		public String getPlural(String word) {
+			StringBuffer buffer = new StringBuffer();
+			Matcher matcher = singular.matcher(word);
+			if (matcher.find()) {
+				matcher.appendReplacement(buffer, plural);
+				matcher.appendTail(buffer);
+				return buffer.toString();
+			}
+			return null;
+		}
+	}
+
+	private static class CategoryRule implements Rule {
+		private final String[] list;
+		private final String singular;
+		private final String plural;
+
+		public CategoryRule(String[] list, String singular, String plural) {
+			this.list = list;
+			this.singular = singular;
+			this.plural = plural;
 		}
 
-		public String getPlural() {
-			return plural;
+		@Override
+		public String getPlural(String word) {
+			String lowerWord = word.toLowerCase();
+			for (String suffix : list) {
+				if (lowerWord.endsWith(suffix)) {
+					if (!lowerWord.endsWith(singular)) {
+						throw new RuntimeException("Internal error");
+					}
+					return word.substring(0, word.length() - singular.length()) + plural;
+				}
+			}
+			return null;
 		}
 	}
 	
-	private List<Rule> rules = new ArrayList<Rule>();
+	private final List<Rule> rules = new ArrayList<Rule>();
 	
 	protected String getPlural(String word) {
-		StringBuffer buffer = new StringBuffer();
-
 		for (Rule rule : rules) {
-			Matcher matcher = rule.getSingular().matcher(word);
-			if (matcher.find()) {
-				matcher.appendReplacement(buffer, rule.getPlural());
-				matcher.appendTail(buffer);
-				return buffer.toString();
+			String result = rule.getPlural(word);
+			if (result != null) {
+				return result;
 			}
 		}
 		return null;
 	}
 	
-	protected void uncountable(String word) {
-		rules.add(new Rule(Pattern.compile("(?i)(" + word + ")$"), "$1"));
-	}
-	
 	protected void uncountable(String[] list) {
-		StringBuilder builder = new StringBuilder();
-		builder.append("(?i)(");
-		builder.append(list[0]);
-		for (String word : list) {
-			builder.append("|").append(word);
-		}
-		builder.append(")$");
-		rules.add(new Rule(Pattern.compile(builder.toString()), "$1"));
+		rules.add(new CategoryRule(list, "", ""));
 	}
 	
 	protected void irregular(String singular, String plural) {
 		if (singular.charAt(0) == plural.charAt(0)) {
-			rules.add(new Rule(Pattern.compile("(?i)(" + singular.charAt(0) + ")" + singular.substring(1)
+			rules.add(new RegExpRule(Pattern.compile("(?i)(" + singular.charAt(0) + ")" + singular.substring(1)
 					+ "$"), "$1" + plural.substring(1)));
 		} else {
-			rules.add(new Rule(Pattern.compile(Character.toUpperCase(singular.charAt(0)) + "(?i)"
+			rules.add(new RegExpRule(Pattern.compile(Character.toUpperCase(singular.charAt(0)) + "(?i)"
 					+ singular.substring(1) + "$"), Character.toUpperCase(plural.charAt(0))
 					+ plural.substring(1)));
-			rules.add(new Rule(Pattern.compile(Character.toLowerCase(singular.charAt(0)) + "(?i)"
+			rules.add(new RegExpRule(Pattern.compile(Character.toLowerCase(singular.charAt(0)) + "(?i)"
 					+ singular.substring(1) + "$"), Character.toLowerCase(plural.charAt(0))
 					+ plural.substring(1)));
 		}
@@ -88,24 +108,16 @@ public abstract class TwoFormInflector {
 	}
 	
 	protected void rule(String singular, String plural) {
-		rules.add(new Rule(Pattern.compile(singular, Pattern.CASE_INSENSITIVE), plural));
+		rules.add(new RegExpRule(Pattern.compile(singular, Pattern.CASE_INSENSITIVE), plural));
 	}
 	
 	protected void rule(String[][] list) {
 		for (String[] pair : list) {
-			rules.add(new Rule(Pattern.compile(pair[0], Pattern.CASE_INSENSITIVE), pair[1]));
+			rules.add(new RegExpRule(Pattern.compile(pair[0], Pattern.CASE_INSENSITIVE), pair[1]));
 		}
 	}
-	
+
 	protected void categoryRule(String[] list, String singular, String plural) {
-		StringBuilder builder = new StringBuilder();
-		
-		builder.append("(?=").append(list[0]);
-		for (String word : list) {
-			builder.append("|").append(word);
-		}
-		builder.append(")");
-		builder.append(singular);
-		rules.add(new Rule(Pattern.compile(builder.toString(), Pattern.CASE_INSENSITIVE), plural));
+		rules.add(new CategoryRule(list, singular, plural));
 	}
 }

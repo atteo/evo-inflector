@@ -29,7 +29,7 @@ import static org.junit.Assume.assumeNotNull;
 import org.junit.Test;
 
 public class EnglishInflectorTest {
-	private English inflector = new English();
+	private final English inflector = new English();
 
 	@Test
 	public void wiktionaryList() throws IOException {
@@ -59,7 +59,6 @@ public class EnglishInflectorTest {
 		// Pattern to find noun definition
 		Pattern enNounPattern = Pattern.compile("\\{\\{en-noun([a-z0-9\\|\\-\\[\\]\\?\\!=]*)\\}\\}");
 
-		Pattern plPattern = Pattern.compile("pl(\\d)?=(.+)");
 		Pattern wordPattern = Pattern.compile("([a-z]+)");
 
 		String line;
@@ -101,7 +100,6 @@ public class EnglishInflectorTest {
 				}
 				String[] rules = enNounMatcher.group(1).split("\\|");
 				List<String> plurals = new ArrayList<String>();
-				List<String> rules2 = new ArrayList<String>();
 
 				for (String rule : rules) {
 					if (rule.isEmpty()) {
@@ -188,6 +186,7 @@ public class EnglishInflectorTest {
 			{ "human", "humans" },
 			{ "sugar", "sugar" },
 			{ "virus", "viruses" },
+			{ "gastrostomy", "gastrostomies" },
 		});
 	}
 

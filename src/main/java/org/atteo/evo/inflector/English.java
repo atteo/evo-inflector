@@ -129,20 +129,22 @@ public class English extends TwoFormInflector {
 	}
 
 	public English(MODE mode) {
-		// 2. Handle words that do not inflect in the plural (such as fish, travois, chassis, nationalities ending
-		// in -ese etc.
 
-		rule("(fish|ois|sheep|deer|pox|itis)$", "$1");
+		uncountable(new String[] {
+			// 2. Handle words that do not inflect in the plural (such as fish, travois, chassis, nationalities ending
+			// endings
+			"fish", "ois", "sheep", "deer", "pox", "itis",
 
-		uncountable(new String[] { "bison", "flounder", "pliers", "bream",
-				"gallows", "proceedings", "breeches", "graffiti", "rabies",
-				"britches", "headquarters", "salmon", "carp", "herpes",
-				"scissors", "chassis", "high-jinks", "sea-bass", "clippers",
-				"homework", "series", "cod", "innings", "shears",
-				"contretemps", "jackanapes", "species", "corps", "mackerel",
-				"swine", "debris", "measles", "trout", "diabetes", "mews",
-				"tuna", "djinn", "mumps", "whiting", "eland", "news",
-				"wildebeest", "elk", "pincers", "sugar" });
+			// words
+			"bison", "flounder", "pliers", "bream",
+			"gallows", "proceedings", "breeches", "graffiti", "rabies",
+			"britches", "headquarters", "salmon", "carp", "herpes",
+			"scissors", "chassis", "high-jinks", "sea-bass", "clippers",
+			"homework", "series", "cod", "innings", "shears",
+			"contretemps", "jackanapes", "species", "corps", "mackerel",
+			"swine", "debris", "measles", "trout", "diabetes", "mews",
+			"tuna", "djinn", "mumps", "whiting", "eland", "news",
+			"wildebeest", "elk", "pincers", "sugar" });
 
 		// 4. Handle standard irregular plurals (mongooses, oxen, etc.)
 
@@ -181,7 +183,7 @@ public class English extends TwoFormInflector {
 			});
 		}
 
-		categoryRule(CATEGORY_MAN_MANS, "(.*)$", "$1s");
+		categoryRule(CATEGORY_MAN_MANS, "", "s");
 
 		// questionable
 		/*
@@ -204,11 +206,11 @@ public class English extends TwoFormInflector {
 		});
 
 		// 6. Handle fully assimilated classical inflections
-		categoryRule(CATEGORY_EX_ICES, "(.*)ex$", "$1ices");
-		categoryRule(CATEGORY_IX_ICES, "(.*)ix$", "$1ices");
-		categoryRule(CATEGORY_UM_A, "(.*)um$", "$1a");
-		categoryRule(CATEGORY_ON_A, "(.*)on$", "$1a");
-		categoryRule(CATEGORY_A_AE, "(.*)a$", "$1ae");
+		categoryRule(CATEGORY_EX_ICES, "ex", "ices");
+		categoryRule(CATEGORY_IX_ICES, "ix", "ices");
+		categoryRule(CATEGORY_UM_A, "um", "a");
+		categoryRule(CATEGORY_ON_A, "on", "a");
+		categoryRule(CATEGORY_A_AE, "a", "ae");
 
 		// 7. Handle classical variants of modern inflections
 		if (mode == MODE.ENGLISH_CLASSICAL) {
@@ -218,25 +220,25 @@ public class English extends TwoFormInflector {
 					{ "ieu$", "ieux" },
 					{ "(..[iay])nx$", "$1nges" },
 			});
-			categoryRule(CATEGORY_EN_INA, "(.*)en$", "$1ina");
-			categoryRule(CATEGORY_A_ATA, "(.*)a$", "$1ata");
-			categoryRule(CATEGORY_IS_IDES, "(.*)is$", "$1ides");
+			categoryRule(CATEGORY_EN_INA, "en", "ina");
+			categoryRule(CATEGORY_A_ATA, "a", "ata");
+			categoryRule(CATEGORY_IS_IDES, "is", "ides");
 			categoryRule(CATEGORY_US_US, "", "");
-			categoryRule(CATEGORY_O_I, "(.*)o$", "$1i");
-			categoryRule(CATEGORY_NONE_I, "(.*)$", "$1i");
-			categoryRule(CATEGORY_NONE_IM, "(.*)$", "$1im");
-			categoryRule(CATEGORY_EX_EXES, "(.*)ex$", "$1ices");
-			categoryRule(CATEGORY_IX_IXES, "(.*)ix$", "$1ices");
+			categoryRule(CATEGORY_O_I, "o", "i");
+			categoryRule(CATEGORY_NONE_I, "", "i");
+			categoryRule(CATEGORY_NONE_IM, "", "im");
+			categoryRule(CATEGORY_EX_EXES, "ex", "ices");
+			categoryRule(CATEGORY_IX_IXES, "ix", "ices");
 		}
 
-		categoryRule(CATEGORY_US_I, "(.*)us$", "$1i");
+		categoryRule(CATEGORY_US_I, "us", "i");
 
 		rule("([cs]h|[zx])$", "$1es");
-		categoryRule(CATEGORY_S_ES, "(.*)$", "$1es");
-		categoryRule(CATEGORY_IS_IDES, "(.*)$", "$1es");
-		categoryRule(CATEGORY_US_US, "(.*)$", "$1es");
+		categoryRule(CATEGORY_S_ES, "", "es");
+		categoryRule(CATEGORY_IS_IDES, "", "es");
+		categoryRule(CATEGORY_US_US, "", "es");
 		rule("(us)$", "$1es");
-		categoryRule(CATEGORY_A_ATA, "(.*)$", "$1s");
+		categoryRule(CATEGORY_A_ATA, "", "s");
 
 		// The suffixes -ch, -sh, and -ss all take -es in the plural (churches,
 		// classes, etc)...
@@ -255,13 +257,13 @@ public class English extends TwoFormInflector {
 		rule(new String[][] { { "([aeiou])y$", "$1ys" }, { "y$", "ies" }, });
 
 		// Some words ending in -o take -os (including does preceded by a vowel)
-		categoryRule(CATEGORY_O_I, "(.*)o$", "$1os");
-		categoryRule(CATEGORY_O_OS, "(.*)o$", "$1os");
+		categoryRule(CATEGORY_O_I, "o", "os");
+		categoryRule(CATEGORY_O_OS, "o", "os");
 		rule("([aeiou])o$", "$1os");
 		// The rest take -oes
 		rule("o$", "oes");
 
-		categoryRule(CATEGORY_A_ATA, "(.*)$", "$1es");
+		categoryRule(CATEGORY_A_ATA, "", "es");
 
 		// Otherwise, assume that the plural just adds -s
 		rule("(.*)$", "$1s");
