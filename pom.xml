@@ -4,10 +4,10 @@
 	<parent>
 		<artifactId>parent</artifactId>
 		<groupId>org.atteo</groupId>
-		<version>1.0</version>
+		<version>1.10</version>
 	</parent>
 	<artifactId>evo-inflector</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.1</version>
 	<name>Evo Inflector</name>
 	<description>Evo Inflector implements English pluralization algorithm.</description>
 	<!-- Javadoc adds /apidocs to this URL when it tries to find Javadocs. Make it happy. -->
