@@ -263,6 +263,8 @@ public class English extends TwoFormInflector {
 		// The rest take -oes
 		rule("o$", "oes");
 
+		rule("ulum", "ula");
+
 		categoryRule(CATEGORY_A_ATA, "", "es");
 
 		// Otherwise, assume that the plural just adds -s
