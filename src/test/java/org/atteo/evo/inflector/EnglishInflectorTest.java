@@ -150,7 +150,7 @@ public class EnglishInflectorTest {
 		float basicCorrect = (basicCount - basicWrong) * 100 / (float)basicCount;
 		System.out.println("Words checked: " + count + " (" + basicCount + " basic words)");
 		System.out.println("Correct: " + correct + "% (" + basicCorrect + "% basic words)");
-		assertTrue(correct > 50);
+		assertTrue(correct > 70);
 		assertTrue(basicWrong == 0);
 	}
 
