@@ -38,13 +38,13 @@ Evo Inflector is available under [Apache License 2.0](https://www.apache.org/lic
 Download
 ========
 
-You can download the library from [here](http://search.maven.org/remotecontent?filepath=org/atteo/evo-inflector/1.0.1/evo-inflector-1.0.1.jar) or use the following Maven dependency:
+You can download the library from [here](http://search.maven.org/remotecontent?filepath=org/atteo/evo-inflector/1.1/evo-inflector-1.1.jar) or use the following Maven dependency:
 
 ```xml
 <dependency>
     <groupId>org.atteo</groupId>
     <artifactId>evo-inflector</artifactId>
-    <version>1.0.1</version>
+    <version>1.1</version>
 </dependency>
 ```
 
