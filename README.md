@@ -3,14 +3,17 @@ About
 
 Evo Inflector implements English pluralization algorithm based on Damian Conway's paper ["An Algorithmic Approach to English Pluralization"](http://www.csse.monash.edu.au/~damian/papers/HTML/Plurals.html).
 
-The tests performed (December 2011) based on data from [Wiktionary](http://dumps.wikimedia.org/enwiktionary/latest/) show perfect results for 1000 basic words and 70% of corrects answers for the entire Wiktionary set of more than 100000 words.
+The tests performed (April 2014) based on data from [Wiktionary](http://dumps.wikimedia.org/enwiktionary/latest/) show perfect results for 1000 basic words and 70% of corrects answers for the entire Wiktionary set of more than 100000 words.
 
-Words checked: 108774 (979 basic words)
-Correct: 69.92112% (100.0% basic words)
+Words checked: 142867 (979 basic words)
+Correct: 71.24738% (100.0% basic words)
 (If you are curious this test is part of the [unit tests](https://github.com/atteo/evo-inflector/blob/master/src/test/java/org/atteo/evo/inflector/EnglishInflectorTest.java).)
 
 Changes
 =======
+
+1.1
+	- fix for -us ending words, like virus
 
 1.0.1
 	- add inflection with count
