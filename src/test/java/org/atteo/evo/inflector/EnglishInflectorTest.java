@@ -51,7 +51,7 @@ public class EnglishInflectorTest {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 
 		// Pattern find word name
-		Pattern titlePattern = Pattern.compile("<title>([a-z]+)</title>");
+		Pattern titlePattern = Pattern.compile("<title>([^<]+)</title>");
 		// Pattern to find beginning of wiki text
 		Pattern textPattern = Pattern.compile("<text");
 		// Pattern to find rank definition
@@ -59,7 +59,7 @@ public class EnglishInflectorTest {
 		// Pattern to find noun definition
 		Pattern enNounPattern = Pattern.compile("\\{\\{en-noun([a-z0-9\\|\\-\\[\\]\\?\\!=]*)\\}\\}");
 
-		Pattern wordPattern = Pattern.compile("([a-z]+)");
+		Pattern wordPattern = Pattern.compile("([a-zA-Z\\-]+)");
 
 		String line;
 		String word = "";
@@ -68,12 +68,12 @@ public class EnglishInflectorTest {
 		int basicCount = 0;
 		int wrong = 0;
 		int basicWrong = 0;
-		boolean basicWord;
+		boolean basicWord = false;
 		while ((line = reader.readLine()) != null) {
-			basicWord = false;
 			Matcher titleMatcher = titlePattern.matcher(line);
 			if (titleMatcher.find()) {
 				word = titleMatcher.group(1);
+				basicWord = false;
 				text = 0;
 				continue;
 			}
@@ -87,12 +87,17 @@ public class EnglishInflectorTest {
 				basicWord = true;
 				basicCount++;
 			}
+			if (text != 1) {
+				continue;
+			}
 			Matcher enNounMatcher = enNounPattern.matcher(line);
 			if (enNounMatcher.find()) {
+				// only first
+				/*
 				if (text != 1) {
 					continue;
 				}
-				// only first
+				*/
 				text++;
 				count++;
 				if (count % 5000 == 0) {
@@ -111,6 +116,10 @@ public class EnglishInflectorTest {
 						plurals.add(word + "s");
 					} else if ("es".equals(rule)) {
 						plurals.add(word + "es");
+					} else if ("!".equals(rule)) {
+						plurals.add("plural not attested");
+					} else if ("?".equals(rule)) {
+						plurals.add("unknown");
 					} else {
 						Matcher matcher = wordPattern.matcher(rule);
 						if (matcher.matches()) {
