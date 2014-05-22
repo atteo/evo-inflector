@@ -3,27 +3,30 @@ About
 
 Evo Inflector implements English pluralization algorithm based on Damian Conway's paper ["An Algorithmic Approach to English Pluralization"](http://www.csse.monash.edu.au/~damian/papers/HTML/Plurals.html).
 
-The tests performed (April 2014) based on data from [Wiktionary](http://dumps.wikimedia.org/enwiktionary/latest/) show perfect results for 1000 basic words and 70% of corrects answers for the entire Wiktionary set of more than 100000 words.
+The tests performed (May 2014) based on data from [Wiktionary](http://dumps.wikimedia.org/enwiktionary/latest/) show that:
+- for entire set of 163518 words from Wiktionary, Evo Inflector returns correct answer for 68.4% of them,
+- for 979 words marked as basic words almost all answers are correct, the sole exception being the word ['worse'](https://en.wiktionary.org/wiki/worse) which when used as a noun does not have a plural form,
+- for 24.9% of all words Evo Inflector returns some form, but the word is marked as uncountable in Wiktionary,
+- for 4.1% of all words Wiktionary does not specify the plural form for given word so whatever Evo Inflector returns will always be wrong,
+- for 2.6% Evo Inflector returns an answer which is different than the one provided in Wiktionary.
 
-Words checked: 142867 (979 basic words)
-Correct: 71.24738% (100.0% basic words)
 (If you are curious this test is part of the [unit tests](https://github.com/atteo/evo-inflector/blob/master/src/test/java/org/atteo/evo/inflector/EnglishInflectorTest.java).)
 
 Changes
 =======
 
 1.2
-	- compile with Java 1.6 for better compatibility
-	- -s -> -ses, for instance pancreas -> pancrases
-	- -ulum -> -ula, for instance baculum -> bacula
-	- some minor optimizations
-	- better testing with Wiktionary dump
+- compile with Java 1.6 for better compatibility
+- -s -> -ses, for instance pancreas -> pancrases
+- -ulum -> -ula, for instance baculum -> bacula
+- some minor optimizations
+- better testing with Wiktionary dump
 
 1.1
-	- fix for -us ending words, like virus
+- fix for -us ending words, like virus
 
 1.0.1
-	- add inflection with count
+- add inflection with count
 
 1.0 Initial revision
 
@@ -45,13 +48,13 @@ Evo Inflector is available under [Apache License 2.0](https://www.apache.org/lic
 Download
 ========
 
-You can download the library from [here](http://search.maven.org/remotecontent?filepath=org/atteo/evo-inflector/1.1/evo-inflector-1.1.jar) or use the following Maven dependency:
+You can download the library from [here](http://search.maven.org/remotecontent?filepath=org/atteo/evo-inflector/1.2/evo-inflector-1.2.jar) or use the following Maven dependency:
 
 ```xml
 <dependency>
     <groupId>org.atteo</groupId>
     <artifactId>evo-inflector</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
 </dependency>
 ```
 
