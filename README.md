@@ -12,6 +12,13 @@ Correct: 71.24738% (100.0% basic words)
 Changes
 =======
 
+1.2
+	- compile with Java 1.6 for better compatibility
+	- -s -> -ses, for instance pancreas -> pancrases
+	- -ulum -> -ula, for instance baculum -> bacula
+	- some minor optimizations
+	- better testing with Wiktionary dump
+
 1.1
 	- fix for -us ending words, like virus
 
