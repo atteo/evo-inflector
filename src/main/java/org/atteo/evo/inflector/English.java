@@ -61,7 +61,7 @@ public class English extends TwoFormInflector {
 			"ditto", "dynamo", "embryo", "ghetto", "guano", "inferno", "jumbo",
 			"lumbago", "magneto", "manifesto", "medico", "octavo", "photo",
 			"pro", "quarto", "canto", "lingo", "generalissimo", "stylo",
-			"rhino", "casino", "auto", "macro", "zero",
+			"rhino", "casino", "auto", "macro", "zero", "todo"
 	};
 
 	// Classical o -> i  (normally -> os)
