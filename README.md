@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/atteo/evo-inflector.svg)](https://travis-ci.org/atteo/evo-inflector)
+[![Coverage Status](https://img.shields.io/coveralls/atteo/evo-inflector.svg)](https://coveralls.io/r/atteo/evo-inflector)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.atteo/evo-inflector/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.atteo/evo-inflector)
+
 About
 =====
 
