@@ -19,6 +19,13 @@
 			<email>sentinel@atteo.com</email>
 		</developer>
 	</developers>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 	<scm>
 		<connection>scm:git:https://github.com/atteo/evo-inflector.git</connection>
 		<url>https://github.com/atteo/evo-inflector</url>
