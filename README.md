@@ -19,6 +19,9 @@ The tests performed (May 2014) based on data from [Wiktionary](http://dumps.wiki
 Changes
 =======
 
+1.2.2
+- fix pluralization of todo
+
 1.2
 - compile with Java 1.6 for better compatibility
 - -s -> -ses, for instance pancreas -> pancrases
