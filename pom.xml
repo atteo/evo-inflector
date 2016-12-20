@@ -12,13 +12,6 @@
 	<description>Evo Inflector implements English pluralization algorithm.</description>
 	<!-- Javadoc adds /apidocs to this URL when it tries to find Javadocs. Make it happy. -->
 	<url>http://atteo.org/static/evo-inflector</url>
-	<developers>
-		<developer>
-			<id>sentinel</id>
-			<name>Sławek Piotrowski</name>
-			<email>sentinel@atteo.com</email>
-		</developer>
-	</developers>
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
@@ -26,6 +19,13 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+	<developers>
+		<developer>
+			<id>sentinel</id>
+			<name>Sławek Piotrowski</name>
+			<email>sentinel@atteo.com</email>
+		</developer>
+	</developers>
 	<scm>
 		<connection>scm:git:https://github.com/atteo/evo-inflector.git</connection>
 		<url>https://github.com/atteo/evo-inflector</url>
