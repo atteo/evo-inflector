@@ -64,6 +64,11 @@ You can download the library from [here](http://search.maven.org/remotecontent?f
     <version>1.2.2</version>
 </dependency>
 ```
+or the Gradle dependency:
+
+```groovy
+compile group: 'org.atteo', name: 'evo-inflector', version: '1.2.2'
+```
 
 
 
