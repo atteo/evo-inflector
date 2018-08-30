@@ -176,7 +176,7 @@ public class English extends TwoFormInflector {
 			// Classical plural
 			irregular(new String[][] { { "beef", "beeves"},
 					{ "brother", "brethren" },
-					{ "cos", "kine" }, { "genie", "genii"},
+					{ "cow", "kine" }, { "genie", "genii"},
 					{ "money", "monies" },
 					{ "octopus", "octopodes" },
 					{ "opus", "opera" },
