@@ -263,7 +263,7 @@ public class English extends TwoFormInflector {
 		// The rest take -oes
 		rule("o$", "oes");
 
-		rule("ulum", "ula");
+		rule("ulum$", "ula");
 
 		categoryRule(CATEGORY_A_ATA, "", "es");
 
