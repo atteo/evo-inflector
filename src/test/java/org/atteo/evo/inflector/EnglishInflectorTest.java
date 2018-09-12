@@ -23,10 +23,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.tools.bzip2.CBZip2InputStream;
+import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeNotNull;
-import org.junit.Test;
 
 public class EnglishInflectorTest {
 	private final English inflector = new English();
@@ -224,7 +225,9 @@ public class EnglishInflectorTest {
 			{ "gastrostomy", "gastrostomies" },
 			{ "baculum", "bacula" },
 			{ "pancreas", "pancreases" },
-			{ "todo", "todos" }
+			{ "todo", "todos"},
+			{ "person", "persons"},
+			{ "baculumulum", "baculumula" }, // https://github.com/atteo/evo-inflector/pull/18
 		});
 	}
 
