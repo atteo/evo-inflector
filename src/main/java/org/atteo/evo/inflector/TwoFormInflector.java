@@ -74,6 +74,9 @@ public abstract class TwoFormInflector {
 	private final List<Rule> rules = new ArrayList<Rule>();
 	
 	protected String getPlural(String word) {
+		if (word.isEmpty()) {
+			return word;
+		}
 		for (Rule rule : rules) {
 			String result = rule.getPlural(word);
 			if (result != null) {

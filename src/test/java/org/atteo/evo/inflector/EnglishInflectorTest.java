@@ -224,7 +224,8 @@ public class EnglishInflectorTest {
 			{ "gastrostomy", "gastrostomies" },
 			{ "baculum", "bacula" },
 			{ "pancreas", "pancreases" },
-			{ "todo", "todos" }
+			{ "todo", "todos" },
+			{ "", "" }
 		});
 	}
 
