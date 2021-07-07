@@ -5,7 +5,7 @@
 About
 =====
 
-Evo Inflector implements English pluralization algorithm based on Damian Conway's paper ["An Algorithmic Approach to English Pluralization"](http://www.csse.monash.edu.au/~damian/papers/HTML/Plurals.html).
+Evo Inflector implements English pluralization algorithm based on ["Damian Conway's"](https://en.wikipedia.org/wiki/Damian_Conway) paper ["An Algorithmic Approach to English Pluralization"](http://www.csse.monash.edu.au/~damian/papers/HTML/Plurals.html).
 
 The tests performed (May 2014) based on data from [Wiktionary](http://dumps.wikimedia.org/enwiktionary/latest/) show that:
 - for entire set of 163518 words from Wiktionary, Evo Inflector returns correct answer for 68.4% of them,
