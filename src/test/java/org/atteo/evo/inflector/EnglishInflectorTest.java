@@ -185,7 +185,7 @@ public class EnglishInflectorTest {
 		System.out.println("    No plural form specified: " + wrongNoPlural + " (" + wrongNoPluralPercent + "%)");
 		System.out.println("    Incorrect answer: " + justPlainWrong + " (" + justPlainWrongPercent + "%)");
 		assertTrue(correct > 68);
-		assertTrue(basicWrong == 1);
+		assertEquals(1, basicWrong);
 	}
 
 	@Test
