@@ -228,6 +228,7 @@ public class EnglishInflectorTest {
 			{ "todo", "todos"},
 			{ "person", "persons"},
 			{ "baculumulum", "baculumula" }, // https://github.com/atteo/evo-inflector/pull/18
+			{ "", "" }
 		});
 	}
 

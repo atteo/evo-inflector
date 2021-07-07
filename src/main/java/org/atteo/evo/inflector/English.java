@@ -268,6 +268,9 @@ public class English extends TwoFormInflector {
 		categoryRule(CATEGORY_A_ATA, "", "es");
 
 		rule("s$", "ses");
+
+		// Return empty string for empty string input
+		rule("^$", "");
 		// Otherwise, assume that the plural just adds -s
 		rule("$", "s");
 	}
