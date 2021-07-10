@@ -60,6 +60,12 @@ In overall it returns correct answer for 69.02782% (190913) of all nouns.
 Changes
 =======
 
+1.3
+- fix ulum -> ula rule
+- return empty string for empty string input
+- improve preservation of letter capitalization
+- make tests up-to-date with change in Wiktionary
+
 1.2.2
 - fix pluralization of todo
 
@@ -86,13 +92,13 @@ Evo Inflector is available under [Apache License 2.0](https://www.apache.org/lic
 Download
 ========
 
-You can download the library from [here](http://search.maven.org/remotecontent?filepath=org/atteo/evo-inflector/1.2.2/evo-inflector-1.2.2.jar) or use the following Maven dependency:
+You can download the library from [here](http://search.maven.org/remotecontent?filepath=org/atteo/evo-inflector/1.3/evo-inflector-1.3.jar) or use the following Maven dependency:
 
 ```xml
 <dependency>
     <groupId>org.atteo</groupId>
     <artifactId>evo-inflector</artifactId>
-    <version>1.2.2</version>
+    <version>1.3</version>
 </dependency>
 ```
 or the Gradle dependency:
