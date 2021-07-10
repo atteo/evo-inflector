@@ -41,7 +41,7 @@ public class EnglishInflectorTest {
 		AtomicInteger pluralNotAttested = new AtomicInteger();
 		AtomicInteger pluralUnknown = new AtomicInteger();
 
-		FileWriter incorrectCountable = new FileWriter("incorrect-countable.md");
+		FileWriter incorrectCountable = new FileWriter("reports/incorrect-countable.md");
 		incorrectCountable.append("|Singular|Evo-Inflector plural|Wiktionary plurals|\n");
 		incorrectCountable.append("|--------|--------------------|------------------|\n");
 
@@ -131,9 +131,10 @@ public class EnglishInflectorTest {
 		System.out.println("- for " + percent(pluralUnknown.get(), all) + " nouns plural is unknown,");
 		System.out.println("- for " + percent(pluralNotAttested.get(), all) + " nouns plural is not attested.");
 		System.out.println("");
-		System.out.println("Evo Inflector returns correct answer for "
-			+ percent(correctCountable.get(), countable.get()) + " of all countable nouns,");
-		System.out.println("but only for " + percent(correctUncountable.get(), uncountable.get()) + " of uncountable nouns");
+		System.out.println("Evo Inflector returns correct answer for: ");
+		System.out.println("- " + percent(correctCountable.get(), countable.get())
+			+ " of all countable nouns, see [this report](reports/incorrect-countable.md),");
+		System.out.println("- but only for " + percent(correctUncountable.get(), uncountable.get()) + " of uncountable nouns.");
 		System.out.println("In overall it returns correct answer for "
 			+ percent(correctCountable.get() + correctUncountable.get(), all) + " of all nouns");
 		System.out.println("");

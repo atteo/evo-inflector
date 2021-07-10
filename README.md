@@ -45,25 +45,17 @@ Tests
 
 As part of the unit tests the results of the algorithm are compared with data from Wiktionary.
 
-There are (July 2021) 282070 single word english nouns in the English Wiktionary of which:
-- 71.81% (202551) are countable nouns,
-- 25.00% (70532) are uncountable nouns,
-- for 2.91% (8212) nouns plural is unknown,
-- for 0.27% (775) nouns plural is not attested.
-
-Evo Inflector returns correct answer for 96.28% (195034) of all countable nouns.
-
-
 There are (2021-07-10) 276574 single word english nouns in the English Wiktionary of which:
 - 69.26971% (191582) are countable nouns,
 - 27.56839% (76247) are uncountable nouns,
 - for 2.8863885% (7983) nouns plural is unknown,
 - for 0.27551398% (762) nouns plural is not attested.
 
-Evo Inflector returns correct answer for 96.19432% (184291) of all countable nouns,
-but only for 8.56296% (6529) of uncountable nouns
-In overall it returns correct answer for 68.994194% (190820) of all nouns
+Evo Inflector returns correct answer for:
+- 96.24286% (184384) of all countable nouns, see [this report](reports/incorrect-countable.md),
+- but only for 8.56296% (6529) of uncountable nouns.
 
+In overall it returns correct answer for 69.02782% (190913) of all nouns.
 
 Changes
 =======
