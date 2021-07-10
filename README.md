@@ -7,6 +7,9 @@ About
 
 Evo Inflector implements English pluralization algorithm based on ["Damian Conway's"](https://en.wikipedia.org/wiki/Damian_Conway) paper ["An Algorithmic Approach to English Pluralization"](http://www.csse.monash.edu.au/~damian/papers/HTML/Plurals.html).
 
+There are more or less half a million downloads of Evo Inflector from Maven Central each month.
+It is used by many high profile projects like [Spring and JetBrains](https://mvnrepository.com/artifact/org.atteo/evo-inflector/usages) and [tons of smaller projects](https://github.com/atteo/evo-inflector/network/dependents).
+
 Usage
 =====
 
