@@ -155,15 +155,12 @@ public class EnglishInflectorTest {
 			{ "quick_chateau", "quick_chateaus" },
 			{ "codex", "codices" },
 			{ "index", "indexes" },
-			{ "NightWolf", "NightWolves" },
-			{ "Milieu", "Milieus" },
 			{ "basis", "bases" },
 			{ "iris", "irises" },
 			{ "phalanx", "phalanxes" },
 			{ "tempo", "tempos" },
 			{ "foot", "feet" },
 			{ "series", "series" },
-			{ "WorldAtlas", "WorldAtlases" },
 			{ "wish", "wishes" },
 			{ "Bacterium", "Bacteria" },
 			{ "medium", "mediums" },
@@ -184,8 +181,23 @@ public class EnglishInflectorTest {
 			{ "todo", "todos"},
 			{ "person", "persons"},
 			{ "baculumulum", "baculumula" }, // https://github.com/atteo/evo-inflector/pull/18
-			{ "", "" }
+			{ "", "" },
 		});
+	}
+
+	@Test
+	public void shouldPreserveCapitalLetters() {
+		check(new String[][] {
+			{ "Milieu", "Milieus" },
+			{ "NightWolf", "NightWolves" },
+			{ "WorldAtlas", "WorldAtlases" },
+			{ "SMS", "SMSes" },
+			{ "bacuLum", "bacuLa" },
+			{ "alO", "alOes" },
+			{ "luO", "luOs" },
+			{ "boY", "boYs" },
+		});
+
 	}
 
 	@Test

@@ -254,20 +254,20 @@ public class English extends TwoFormInflector {
 		});
 
 		// Words ending in -y take -ys
-		rule(new String[][] { { "([aeiou])y$", "$1ys" }, { "y$", "ies" }, });
+		rule(new String[][] { { "([aeiou]y)$", "$1s" }, { "y$", "ies" }, });
 
 		// Some words ending in -o take -os (including does preceded by a vowel)
 		categoryRule(CATEGORY_O_I, "o", "os");
 		categoryRule(CATEGORY_O_OS, "o", "os");
-		rule("([aeiou])o$", "$1os");
+		rule("([aeiou]o)$", "$1s");
 		// The rest take -oes
-		rule("o$", "oes");
+		rule("(o)$", "$1es");
 
-		rule("ulum$", "ula");
+		rule("(ul)um$", "$1a");
 
 		categoryRule(CATEGORY_A_ATA, "", "es");
 
-		rule("s$", "ses");
+		rule("(s)$", "$1es");
 
 		// Return empty string for empty string input
 		rule("^$", "");
