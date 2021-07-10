@@ -7,14 +7,63 @@ About
 
 Evo Inflector implements English pluralization algorithm based on ["Damian Conway's"](https://en.wikipedia.org/wiki/Damian_Conway) paper ["An Algorithmic Approach to English Pluralization"](http://www.csse.monash.edu.au/~damian/papers/HTML/Plurals.html).
 
-The tests performed (May 2014) based on data from [Wiktionary](http://dumps.wikimedia.org/enwiktionary/latest/) show that:
-- for entire set of 163518 words from Wiktionary, Evo Inflector returns correct answer for 68.4% of them,
-- for 979 words marked as basic words almost all answers are correct, the sole exception being the word ['worse'](https://en.wiktionary.org/wiki/worse) which when used as a noun does not have a plural form,
-- for 24.9% of all words Evo Inflector returns some form, but the word is marked as uncountable in Wiktionary,
-- for 4.1% of all words Wiktionary does not specify the plural form for given word so whatever Evo Inflector returns will always be wrong,
-- for 2.6% Evo Inflector returns an answer which is different than the one provided in Wiktionary.
+Usage
+=====
 
-(If you are curious this test is part of the [unit tests](https://github.com/atteo/evo-inflector/blob/master/src/test/java/org/atteo/evo/inflector/EnglishInflectorTest.java).)
+The usage is pretty simple:
+
+```java
+English.plural("word") == "words"
+```
+
+Additionaly you can use provide a required count to select singular or plural form automatically:
+
+```java
+English.plural("foot", 1)) == "foot"
+English.plural("foot", 2)) == "feet"
+```
+
+
+Features
+========
+The algorithm tries to preserve the capitalization of the original word, for instance:
+
+```java
+English.plural("NightWolf") == "NightWolves"
+```
+
+Limitations:
+============
+
+* The algorithm cannot reliably detect uncountable words. It will pluralize them anyway.
+* There are words which have the same singular form and multiple plural forms, ex:
+die (plural dies) - The cubical part of a pedestal; a plinth.
+die (plural dice) - An isohedral polyhedron, usually a cube
+
+Tests
+=====
+
+As part of the unit tests the results of the algorithm are compared with data from Wiktionary.
+
+There are (July 2021) 282070 single word english nouns in the English Wiktionary of which:
+- 71.81% (202551) are countable nouns,
+- 25.00% (70532) are uncountable nouns,
+- for 2.91% (8212) nouns plural is unknown,
+- for 0.27% (775) nouns plural is not attested.
+
+Evo Inflector returns correct answer for 96.28% (195034) of all countable nouns.
+
+
+There are (2021-07-10) 276574 single word english nouns in the English Wiktionary of which:
+- 69.26971% (191582) are countable nouns,
+- 27.56839% (76247) are uncountable nouns,
+- for 2.8863885% (7983) nouns plural is unknown,
+- for 0.27551398% (762) nouns plural is not attested.
+
+Evo Inflector returns correct answer for 96.19432% (184291) of all countable nouns,
+but only for 8.56296% (6529) of uncountable nouns
+In overall it returns correct answer for 68.994194% (190820) of all nouns
+
 
 Changes
 =======
@@ -36,16 +85,6 @@ Changes
 - add inflection with count
 
 1.0 Initial revision
-
-Usage
-=====
-
-```java
-System.out.println(English.plural("word")); // == "words"
-
-System.out.println(English.plural("word", 1)); // == "word"
-System.out.println(English.plural("word", 2)); // == "words"
-```
 
 License
 =======

@@ -15,62 +15,13 @@ package org.atteo.evo.inflector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.lang.Character.toLowerCase;
+import static java.lang.Character.toUpperCase;
+
 public abstract class TwoFormInflector {
-	private interface Rule {
-		String getPlural(String singular);
-	}
 
-	private static class RegExpRule implements Rule {
-		private final Pattern singular;
-		private final String plural;
-
-		private RegExpRule(Pattern singular, String plural) {
-			this.singular = singular;
-			this.plural = plural;
-		}
-
-		@Override
-		public String getPlural(String word) {
-			StringBuffer buffer = new StringBuffer();
-			Matcher matcher = singular.matcher(word);
-			if (matcher.find()) {
-				matcher.appendReplacement(buffer, plural);
-				matcher.appendTail(buffer);
-				return buffer.toString();
-			}
-			return null;
-		}
-	}
-
-	private static class CategoryRule implements Rule {
-		private final String[] list;
-		private final String singular;
-		private final String plural;
-
-		public CategoryRule(String[] list, String singular, String plural) {
-			this.list = list;
-			this.singular = singular;
-			this.plural = plural;
-		}
-
-		@Override
-		public String getPlural(String word) {
-			String lowerWord = word.toLowerCase();
-			for (String suffix : list) {
-				if (lowerWord.endsWith(suffix)) {
-					if (!lowerWord.endsWith(singular)) {
-						throw new RuntimeException("Internal error");
-					}
-					return word.substring(0, word.length() - singular.length()) + plural;
-				}
-			}
-			return null;
-		}
-	}
-	
 	private final List<Rule> rules = new ArrayList<Rule>();
 	
 	protected String getPlural(String word) {
@@ -89,15 +40,14 @@ public abstract class TwoFormInflector {
 	
 	protected void irregular(String singular, String plural) {
 		if (singular.charAt(0) == plural.charAt(0)) {
-			rules.add(new RegExpRule(Pattern.compile("(?i)(" + singular.charAt(0) + ")" + singular.substring(1)
-					+ "$"), "$1" + plural.substring(1)));
+			rules.add(new RegExpRule("(?i)(" + singular.charAt(0) + ")" + singular.substring(1) + "$",
+				"$1" + plural.substring(1)));
 		} else {
-			rules.add(new RegExpRule(Pattern.compile(Character.toUpperCase(singular.charAt(0)) + "(?i)"
-					+ singular.substring(1) + "$"), Character.toUpperCase(plural.charAt(0))
+			rules.add(new RegExpRule(toUpperCase(singular.charAt(0)) + "(?i)" + singular.substring(1) + "$",
+				toUpperCase(plural.charAt(0))
 					+ plural.substring(1)));
-			rules.add(new RegExpRule(Pattern.compile(Character.toLowerCase(singular.charAt(0)) + "(?i)"
-					+ singular.substring(1) + "$"), Character.toLowerCase(plural.charAt(0))
-					+ plural.substring(1)));
+			rules.add(new RegExpRule(toLowerCase(singular.charAt(0)) + "(?i)" + singular.substring(1) + "$",
+				toLowerCase(plural.charAt(0)) + plural.substring(1)));
 		}
 	}
 	

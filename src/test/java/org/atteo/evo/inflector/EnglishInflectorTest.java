@@ -13,179 +13,135 @@
  */
 package org.atteo.evo.inflector;
 
-import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.net.URLEncoder;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
-import org.apache.tools.bzip2.CBZip2InputStream;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeNotNull;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class EnglishInflectorTest {
 	private final English inflector = new English();
 
 	@Test
-	public void wiktionaryList() throws IOException {
-		InputStream compressedStream = EnglishInflectorTest.class.getResourceAsStream(
-			"/enwiktionary-latest-pages-articles.xml.bz2");
-		if (compressedStream == null) {
-			System.err.println("\nFull test requires wiktionary dump which was not found\n" +
-					"To run rull test do the following:\n" +
-					"cd src/test/resources\n" +
-					"wget http://download.wikimedia.org/enwiktionary/latest/" +
-					"enwiktionary-latest-pages-articles.xml.bz2\n");
-			assumeNotNull(compressedStream);
-			return;
-		}
-		// Read 2 bytes due to bug in BZip library
-		compressedStream.read();
-		compressedStream.read();
-		InputStream stream = new CBZip2InputStream(compressedStream);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+	public void wiktionaryTest() throws IOException {
 
-		// Pattern find word name
-		Pattern titlePattern = Pattern.compile("<title>([^<]+)</title>");
-		// Pattern to find beginning of wiki text
-		Pattern textPattern = Pattern.compile("<text");
-		// Pattern to find rank definition
-		Pattern rankPattern = Pattern.compile("\\{\\{rank");
-		// Pattern to find noun definition
-		Pattern enNounPattern = Pattern.compile("\\{\\{en-noun([a-z0-9\\|\\-\\[\\]\\?\\!=]*)\\}\\}");
+		AtomicInteger all = new AtomicInteger();
+		AtomicInteger countable = new AtomicInteger();
+		AtomicInteger correctCountable = new AtomicInteger();
+		AtomicInteger uncountable = new AtomicInteger();
+		AtomicInteger correctUncountable = new AtomicInteger();
+		AtomicInteger pluralNotAttested = new AtomicInteger();
+		AtomicInteger pluralUnknown = new AtomicInteger();
 
-		Pattern wordPattern = Pattern.compile("([a-zA-Z\\-]+)");
+		FileWriter incorrectCountable = new FileWriter("incorrect-countable.md");
+		incorrectCountable.append("|Singular|Evo-Inflector plural|Wiktionary plurals|\n");
+		incorrectCountable.append("|--------|--------------------|------------------|\n");
 
-		String line;
-		String word = "";
-		int text = 0;
-		int count = 0;
-		int basicCount = 0;
-		int wrong = 0;
-		int basicWrong = 0;
-		int wrongNoPlural = 0;
-		int wrongUncountable = 0;
-		boolean basicWord = false;
-		while ((line = reader.readLine()) != null) {
-			Matcher titleMatcher = titlePattern.matcher(line);
-			if (titleMatcher.find()) {
-				word = titleMatcher.group(1);
-				if (word.startsWith("Wiktionary:")) {
-					continue;
-				}
-				basicWord = false;
-				text = 0;
-				continue;
+		new WikiParser().parse(page -> {
+			if (page.getTitle().contains(" ") || page.getTitle().contains(":")) {
+				return;
 			}
-			Matcher textMatcher = textPattern.matcher(line);
-			if (textMatcher.find()) {
-				text++;
-				continue;
-			}
-			Matcher rankMatcher = rankPattern.matcher(line);
-			if (rankMatcher.find()) {
-				basicWord = true;
-				basicCount++;
-			}
-			if (text != 1) {
-				continue;
-			}
-			Matcher enNounMatcher = enNounPattern.matcher(line);
-			if (enNounMatcher.find()) {
-				// only first
-				/*
-				if (text != 1) {
-					continue;
-				}
-				*/
-				text++;
-				count++;
-				if (count % 5000 == 0) {
-					System.out.println(count);
-				}
-				String[] rules = enNounMatcher.group(1).split("\\|");
-				List<String> plurals = new ArrayList<String>();
 
-				boolean uncountable = false;
-				boolean noPlural = false;
-				for (String rule : rules) {
-					if (rule.isEmpty()) {
-						continue;
-					}
-					if ("-".equals(rule)) {
-						plurals.add(word);
-						uncountable = true;
-					} else if ("s".equals(rule)) {
-						plurals.add(word + "s");
-					} else if ("es".equals(rule)) {
-						plurals.add(word + "es");
-					} else if ("!".equals(rule)) {
-						plurals.add("plural not attested");
-						uncountable = true;
-					} else if ("?".equals(rule)) {
-						plurals.add("unknown");
-						noPlural = true;
-					} else {
-						Matcher matcher = wordPattern.matcher(rule);
-						if (matcher.matches()) {
-							plurals.add(rule);
-						}
-					}
+			List<WikiNoun> wikiNouns = WikiNoun.find(page);
+
+			if (wikiNouns.isEmpty()) {
+				return;
+			}
+
+			all.getAndIncrement();
+			if (all.get() % 10000 == 0) {
+				printSummary(countable, correctCountable, uncountable, correctUncountable, pluralNotAttested, pluralUnknown);
+			}
+
+			String calculatedPlural = inflector.getPlural(wikiNouns.get(0).singular());
+
+			Optional<WikiNoun> correctNoun = wikiNouns.stream()
+				.filter(noun -> noun.plurals().contains(calculatedPlural))
+				.findFirst();
+
+			boolean correct = correctNoun.isPresent();
+
+			WikiNoun wikiNoun = correctNoun.orElse(wikiNouns.get(0));
+
+			if (wikiNoun.isUncountable()) {
+					uncountable.getAndIncrement();
+					if (correct) {
+					    correctUncountable.getAndIncrement();
+                    }
+					return;
 				}
-				if (plurals.isEmpty()) {
-					plurals.add(word + "s");
+				if (wikiNoun.isPluralNotAttested()) {
+					pluralNotAttested.getAndIncrement();
+					return;
 				}
 
-				String calculatedPlural = inflector.getPlural(word);
-				boolean ok = false;
-				for (String plural : plurals) {
-					if (plural.equals(calculatedPlural)) {
-						ok = true;
-						break;
-					}
+				if (wikiNoun.isPluralUnknown()) {
+					pluralUnknown.getAndIncrement();
+					return;
 				}
 
-				if (!ok) {
-					wrong++;
-					if (uncountable) {
-						wrongUncountable++;
-					} else if (noPlural) {
-						wrongNoPlural++;
-					}
-					if (basicWord) {
-						System.out.println("basic word: " + word + " got: " + calculatedPlural + ", but expected "
-								+ enNounMatcher.group(1));
-						basicWrong++;
-					} else {
-						System.out.println(word + " got: " + calculatedPlural + ", but expected "
-								+ enNounMatcher.group(1));
-					}
-				}
-			}
-		}
-		reader.close();
-		compressedStream.close();
+				countable.getAndIncrement();
 
-		float correct = (count - wrong)*100/(float)count;
-		float basicCorrect = (basicCount - basicWrong) * 100 / (float)basicCount;
-		float wrongUncountablePercent = wrongUncountable * 100 / (float)count;
-		float wrongNoPluralPercent = wrongNoPlural * 100 / (float)count;
-		int justPlainWrong = wrong - wrongUncountable - wrongNoPlural;
-		float justPlainWrongPercent = justPlainWrong * 100 / (float)count;
-		System.out.println("Words checked: " + count + " (" + basicCount + " basic words)");
-		System.out.println("Correct: " + correct + "% (" + basicCorrect + "% basic words)");
-		System.out.println("Errors: ");
-		System.out.println("    Uncountable: " + wrongUncountable + " (" + wrongUncountablePercent + "%)");
-		System.out.println("    No plural form specified: " + wrongNoPlural + " (" + wrongNoPluralPercent + "%)");
-		System.out.println("    Incorrect answer: " + justPlainWrong + " (" + justPlainWrongPercent + "%)");
-		assertTrue(correct > 68);
-		assertEquals(1, basicWrong);
+				if (correct) {
+					correctCountable.getAndIncrement();
+					return;
+				}
+
+				try {
+					String wiktionaryPlurals = wikiNouns.stream()
+						.flatMap(noun -> noun.plurals().stream())
+						.collect(Collectors.joining(","));
+					String ennouns = wikiNouns.stream()
+						.map(WikiNoun::ennoun)
+						.collect(Collectors.joining(","));
+
+					String uriEncodedSingular = URLEncoder.encode(wikiNoun.singular(), UTF_8.toString());
+
+					incorrectCountable.append("|" + wikiNoun.singular() + " | " + calculatedPlural + " | ["
+						+ wiktionaryPlurals + "](https://en.wiktionary.org/wiki/" + uriEncodedSingular + ") |\n");
+					System.out.println(wikiNoun.singular() + " -> " + calculatedPlural
+						+ " Wiktionary says: " + wiktionaryPlurals +" {{en-noun" +  ennouns+ "}}");
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+		});
+
+		printSummary(countable, correctCountable, uncountable, correctUncountable, pluralNotAttested, pluralUnknown);
+		incorrectCountable.close();
+	}
+
+	private void printSummary(AtomicInteger countable, AtomicInteger correctCountable,
+							  AtomicInteger uncountable, AtomicInteger correctUncountable,
+							  AtomicInteger pluralNotAttested, AtomicInteger pluralUnknown) {
+		int all = countable.get() + uncountable.get() + pluralNotAttested.get() + pluralUnknown.get();
+
+		System.out.println("");
+		System.out.println("There are (" + LocalDate.now().toString() + ") " + all
+			+ " single word english nouns in the English Wiktionary of which:");
+		System.out.println("- " + percent(countable.get(), all) + " are countable nouns,");
+		System.out.println("- " + percent(uncountable.get(), all) + " are uncountable nouns,");
+		System.out.println("- for " + percent(pluralUnknown.get(), all) + " nouns plural is unknown,");
+		System.out.println("- for " + percent(pluralNotAttested.get(), all) + " nouns plural is not attested.");
+		System.out.println("");
+		System.out.println("Evo Inflector returns correct answer for "
+			+ percent(correctCountable.get(), countable.get()) + " of all countable nouns,");
+		System.out.println("but only for " + percent(correctUncountable.get(), uncountable.get()) + " of uncountable nouns");
+		System.out.println("In overall it returns correct answer for "
+			+ percent(correctCountable.get() + correctUncountable.get(), all) + " of all nouns");
+		System.out.println("");
+	}
+
+	private String percent(int count, int all) {
+		float percent =  count*100 / (float) all;
+		return percent + "% (" + count + ")";
 	}
 
 	@Test
@@ -234,17 +190,17 @@ public class EnglishInflectorTest {
 
 	@Test
 	public void withCount() {
-		assertEquals("cat", inflector.getPlural("cat", 1));
-		assertEquals("cats", inflector.getPlural("cat", 2));
+		assertThat(inflector.getPlural("cat", 1)).isEqualTo("cat");
+		assertThat(inflector.getPlural("cat", 2)).isEqualTo("cats");
 
-		assertEquals("demoness", inflector.getPlural("demoness", 1));
-		assertEquals("demonesses", inflector.getPlural("demoness", 2));
+		assertThat(inflector.getPlural("demoness", 1)).isEqualTo("demoness");
+		assertThat(inflector.getPlural("demoness", 2)).isEqualTo("demonesses");
 	}
 
 	@Test
 	public void staticMethods() {
-		assertEquals("sulfimides", English.plural("sulfimide"));
-		assertEquals("semifluids", English.plural("semifluid", 2));
+		assertThat(English.plural("sulfimide")).isEqualTo("sulfimides");
+		assertThat(English.plural("semifluid", 2)).isEqualTo("semifluids");
 	}
 
 	private void check(String[][] list) {
@@ -254,6 +210,6 @@ public class EnglishInflectorTest {
 	}
 
 	private void check(String singular, String plural) {
-		assertEquals(plural, inflector.getPlural(singular));
+		assertThat(inflector.getPlural(singular)).isEqualTo(plural);
 	}
 }
