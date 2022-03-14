@@ -1,3 +1,5 @@
+[![SWUbanner](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
+
 [![Build Status](https://travis-ci.org/atteo/evo-inflector.svg)](https://travis-ci.org/atteo/evo-inflector)
 [![Coverage Status](https://img.shields.io/coveralls/atteo/evo-inflector.svg)](https://coveralls.io/r/atteo/evo-inflector)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.atteo/evo-inflector/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.atteo/evo-inflector)
