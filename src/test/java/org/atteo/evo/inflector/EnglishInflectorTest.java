@@ -197,6 +197,10 @@ public class EnglishInflectorTest {
 			{ "alO", "alOes" },
 			{ "luO", "luOs" },
 			{ "boY", "boYs" },
+			{ "Foot", "Feet" },
+			{ "Goose", "Geese" },
+			{ "Man", "Men" },
+			{ "Tooth", "Teeth" },
 		});
 
 	}

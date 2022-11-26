@@ -196,12 +196,12 @@ public class English extends TwoFormInflector {
 		 */
 		// 5. Handle irregular inflections for common suffixes
 		rule(new String[][] {
-				{ "man$", "men" },
+				{ "(m)an$", "$1en" },
 				{ "([lm])ouse$", "$1ice" },
-				{ "tooth$", "teeth" },
-				{ "goose$", "geese" },
-				{ "foot$", "feet" },
-				{ "zoon$", "zoa" },
+				{ "(t)ooth$", "$1eeth" },
+				{ "(g)oose$", "$1eese" },
+				{ "(f)oot$", "$1eet" },
+				{ "(z)oon$", "$1oa" },
 				{ "([csx])is$", "$1es" },
 		});
 
