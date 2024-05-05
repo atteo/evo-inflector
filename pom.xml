@@ -67,6 +67,34 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.moditect</groupId>
+				<artifactId>moditect-maven-plugin</artifactId>
+				<version>1.0.0.Final</version>
+				<executions>
+					<execution>
+						<id>add-module-infos</id>
+						<phase>package</phase>
+						<goals>
+							<goal>add-module-info</goal>
+						</goals>
+						<configuration>
+							<jvmVersion>9</jvmVersion>
+							<overwriteExistingFiles>true</overwriteExistingFiles>
+							<module>
+								<moduleInfo>
+									<name>org.atteo.evo.inflector</name>
+									<exports>
+										org.atteo.evo.inflector;
+									</exports>
+								</moduleInfo>
+							</module>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>
