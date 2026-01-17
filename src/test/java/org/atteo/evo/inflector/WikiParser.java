@@ -15,14 +15,14 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class WikiParser {
     public void parse(Consumer<Page> consumer) throws IOException {
-        InputStream compressedStream = EnglishInflectorTest.class.getResourceAsStream(
-            "/enwiktionary-latest-pages-articles.xml.bz2");
+        InputStream compressedStream =
+                EnglishInflectorTest.class.getResourceAsStream("/enwiktionary-latest-pages-articles.xml.bz2");
         if (compressedStream == null) {
-            System.err.println("\nFull test requires wiktionary dump which was not found\n" +
-                "To run rull test do the following:\n" +
-                "cd src/test/resources\n" +
-                "wget http://download.wikimedia.org/enwiktionary/latest/" +
-                "enwiktionary-latest-pages-articles.xml.bz2\n");
+            System.err.println("\nFull test requires wiktionary dump which was not found\n"
+                    + "To run rull test do the following:\n"
+                    + "cd src/test/resources\n"
+                    + "wget http://download.wikimedia.org/enwiktionary/latest/"
+                    + "enwiktionary-latest-pages-articles.xml.bz2\n");
             throw new TestAbortedException("Wiktionary data is missing");
         }
         BZip2CompressorInputStream stream = new BZip2CompressorInputStream(compressedStream);
