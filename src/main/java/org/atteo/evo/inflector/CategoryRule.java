@@ -1,5 +1,7 @@
 package org.atteo.evo.inflector;
 
+import org.jspecify.annotations.Nullable;
+
 class CategoryRule implements Rule {
     private final String[] list;
     private final String singular;
@@ -12,7 +14,7 @@ class CategoryRule implements Rule {
     }
 
     @Override
-    public String getPlural(String word) {
+    public @Nullable String getPlural(String word) {
         var lowerWord = word.toLowerCase();
         for (String suffix : list) {
             if (lowerWord.endsWith(suffix)) {

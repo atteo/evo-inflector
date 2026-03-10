@@ -126,19 +126,24 @@ public class WikiNoun {
     }
 
     private static String defaultPlural(String singular) {
-        if (singular.matches(".*(s|x|z|sh|ch)$")) {
+        if (singular.endsWith("s")
+                || singular.endsWith("x")
+                || singular.endsWith("z")
+                || singular.endsWith("sh")
+                || singular.endsWith("ch")) {
             return singular + "es";
         }
-        var plural = new RegExpRule("([aeiou])y$", "$1ys").getPlural(singular);
-        if (plural != null) {
-            return plural;
+        if (singular.endsWith("y")) {
+            if (singular.length() > 1 && isVowel(singular.charAt(singular.length() - 2))) {
+                return singular + "s";
+            }
+            return singular.substring(0, singular.length() - 1) + "ies";
         }
-        plural = new RegExpRule("y$", "ies").getPlural(singular);
+        return singular + "s";
+    }
 
-        if (plural != null) {
-            return plural;
-        }
-        return new RegExpRule("$", "s").getPlural(singular);
+    private static boolean isVowel(char c) {
+        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
     }
 
     public static List<WikiNoun> find(Page page) {

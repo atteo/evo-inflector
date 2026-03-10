@@ -6,3 +6,4 @@ bin/
 .project
 .config/
 src/test/resources/enwiktionary-latest-pages-articles.xml.bz2
+src/test/resources/enwiktionary-nouns.tsv.gz

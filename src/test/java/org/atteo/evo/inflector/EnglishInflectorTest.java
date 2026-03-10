@@ -16,11 +16,12 @@ package org.atteo.evo.inflector;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -28,6 +29,8 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 class EnglishInflectorTest {
+    private static final Path INCORRECT_COUNTABLE_REPORT = Path.of("target/reports/incorrect-countable.md");
+
     private final English inflector = new English();
 
     @Test
@@ -41,80 +44,63 @@ class EnglishInflectorTest {
         var pluralNotAttested = new AtomicInteger();
         var pluralUnknown = new AtomicInteger();
 
-        var incorrectCountable = new FileWriter("reports/incorrect-countable.md");
-        incorrectCountable.append("|Singular|Evo-Inflector plural|Wiktionary plurals|\n");
-        incorrectCountable.append("|--------|--------------------|------------------|\n");
+        Files.createDirectories(INCORRECT_COUNTABLE_REPORT.getParent());
+        try (BufferedWriter incorrectCountable = Files.newBufferedWriter(INCORRECT_COUNTABLE_REPORT, UTF_8)) {
+            incorrectCountable.append("|Singular|Evo-Inflector plural|Wiktionary plurals|\n");
+            incorrectCountable.append("|--------|--------------------|------------------|\n");
 
-        new WikiParser().parse(page -> {
-            if (page.getTitle().contains(" ") || page.getTitle().contains(":")) {
-                return;
-            }
+            new WiktionaryCorpus().forEach(wikiNouns -> {
+                all.getAndIncrement();
 
-            List<WikiNoun> wikiNouns = WikiNoun.find(page);
+                var calculatedPlural = inflector.getPlural(wikiNouns.get(0).singular());
 
-            if (wikiNouns.isEmpty()) {
-                return;
-            }
+                Optional<WikiNoun> correctNoun = wikiNouns.stream()
+                        .filter(noun -> noun.plurals().contains(calculatedPlural))
+                        .findFirst();
 
-            all.getAndIncrement();
-            if (all.get() % 10000 == 0) {
-                printSummary(
-                        countable, correctCountable, uncountable, correctUncountable, pluralNotAttested, pluralUnknown);
-            }
+                var correct = correctNoun.isPresent();
 
-            var calculatedPlural = inflector.getPlural(wikiNouns.get(0).singular());
+                var wikiNoun = correctNoun.orElse(wikiNouns.get(0));
 
-            Optional<WikiNoun> correctNoun = wikiNouns.stream()
-                    .filter(noun -> noun.plurals().contains(calculatedPlural))
-                    .findFirst();
-
-            var correct = correctNoun.isPresent();
-
-            var wikiNoun = correctNoun.orElse(wikiNouns.get(0));
-
-            if (wikiNoun.isUncountable()) {
-                uncountable.getAndIncrement();
-                if (correct) {
-                    correctUncountable.getAndIncrement();
+                if (wikiNoun.isUncountable()) {
+                    uncountable.getAndIncrement();
+                    if (correct) {
+                        correctUncountable.getAndIncrement();
+                    }
+                    return;
                 }
-                return;
-            }
-            if (wikiNoun.isPluralNotAttested()) {
-                pluralNotAttested.getAndIncrement();
-                return;
-            }
+                if (wikiNoun.isPluralNotAttested()) {
+                    pluralNotAttested.getAndIncrement();
+                    return;
+                }
 
-            if (wikiNoun.isPluralUnknown()) {
-                pluralUnknown.getAndIncrement();
-                return;
-            }
+                if (wikiNoun.isPluralUnknown()) {
+                    pluralUnknown.getAndIncrement();
+                    return;
+                }
 
-            countable.getAndIncrement();
+                countable.getAndIncrement();
 
-            if (correct) {
-                correctCountable.getAndIncrement();
-                return;
-            }
+                if (correct) {
+                    correctCountable.getAndIncrement();
+                    return;
+                }
 
-            try {
-                var wiktionaryPlurals = wikiNouns.stream()
-                        .flatMap(noun -> noun.plurals().stream())
-                        .collect(Collectors.joining(","));
-                var ennouns = wikiNouns.stream().map(WikiNoun::ennoun).collect(Collectors.joining(","));
+                try {
+                    var wiktionaryPlurals = wikiNouns.stream()
+                            .flatMap(noun -> noun.plurals().stream())
+                            .collect(Collectors.joining(","));
+                    String uriEncodedSingular = URLEncoder.encode(wikiNoun.singular(), UTF_8);
 
-                String uriEncodedSingular = URLEncoder.encode(wikiNoun.singular(), UTF_8.toString());
-
-                incorrectCountable.append("|" + wikiNoun.singular() + " | " + calculatedPlural + " | ["
-                        + wiktionaryPlurals + "](https://en.wiktionary.org/wiki/" + uriEncodedSingular + ") |\n");
-                System.out.println(wikiNoun.singular() + " -> " + calculatedPlural + " Wiktionary says: "
-                        + wiktionaryPlurals + " {{en-noun" + ennouns + "}}");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+                    incorrectCountable.append("|" + wikiNoun.singular() + " | " + calculatedPlural + " | ["
+                            + wiktionaryPlurals + "](https://en.wiktionary.org/wiki/" + uriEncodedSingular + ") |\n");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
 
         printSummary(countable, correctCountable, uncountable, correctUncountable, pluralNotAttested, pluralUnknown);
-        incorrectCountable.close();
     }
 
     private void printSummary(
@@ -136,7 +122,7 @@ class EnglishInflectorTest {
         System.out.println("");
         System.out.println("Evo Inflector returns correct answer for: ");
         System.out.println("- " + percent(correctCountable.get(), countable.get())
-                + " of all countable nouns, see [this report](reports/incorrect-countable.md),");
+                + " of all countable nouns, see [this report](target/reports/incorrect-countable.md),");
         System.out.println(
                 "- but only for " + percent(correctUncountable.get(), uncountable.get()) + " of uncountable nouns.");
         System.out.println("In overall it returns correct answer for "

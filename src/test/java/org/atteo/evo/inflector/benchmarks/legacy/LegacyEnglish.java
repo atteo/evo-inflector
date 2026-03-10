@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.jspecify.annotations.Nullable;
+
 abstract class LegacyTwoFormInflector {
     private final List<LegacyRule> rules = new ArrayList<>();
 
@@ -76,7 +78,7 @@ final class LegacyCategoryRule implements LegacyRule {
     }
 
     @Override
-    public String getPlural(String word) {
+    public @Nullable String getPlural(String word) {
         var lowerWord = word.toLowerCase();
         for (String suffix : list) {
             if (lowerWord.endsWith(suffix)) {
@@ -100,7 +102,7 @@ final class LegacyRegExpRule implements LegacyRule {
     }
 
     @Override
-    public String getPlural(String word) {
+    public @Nullable String getPlural(String word) {
         var buffer = new StringBuffer();
         var matcher = singular.matcher(word);
         if (matcher.find()) {

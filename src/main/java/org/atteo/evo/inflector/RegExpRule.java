@@ -2,6 +2,8 @@ package org.atteo.evo.inflector;
 
 import java.util.regex.Pattern;
 
+import org.jspecify.annotations.Nullable;
+
 class RegExpRule implements Rule {
     private final Pattern singular;
     private final String plural;
@@ -17,7 +19,7 @@ class RegExpRule implements Rule {
     }
 
     @Override
-    public String getPlural(String word) {
+    public @Nullable String getPlural(String word) {
         var buffer = new StringBuffer();
         var matcher = singular.matcher(word);
         if (matcher.find()) {
