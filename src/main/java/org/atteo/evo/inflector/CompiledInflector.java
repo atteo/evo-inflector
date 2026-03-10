@@ -19,8 +19,8 @@ final class CompiledInflector {
     record SuffixTransform(int removeLength, String append) implements Transform {
         @Override
         public String apply(String word) {
-            int prefixLength = word.length() - removeLength;
-            StringBuilder builder = new StringBuilder(prefixLength + append.length());
+            var prefixLength = word.length() - removeLength;
+            var builder = new StringBuilder(prefixLength + append.length());
             builder.append(word, 0, prefixLength);
             builder.append(adaptCase(append, word.substring(prefixLength)));
             return builder.toString();
@@ -31,9 +31,9 @@ final class CompiledInflector {
                 return value;
             }
 
-            char[] chars = value.toCharArray();
-            int max = Math.min(chars.length, pattern.length());
-            for (int i = 0; i < max; i++) {
+            var chars = value.toCharArray();
+            var max = Math.min(chars.length, pattern.length());
+            for (var i = 0; i < max; i++) {
                 if (Character.isUpperCase(pattern.charAt(i))) {
                     chars[i] = Character.toUpperCase(chars[i]);
                 }
@@ -75,11 +75,11 @@ final class CompiledInflector {
     }
 
     public String pluralize(String word) {
-        String lowerWord = word.toLowerCase(Locale.ROOT);
+        var lowerWord = word.toLowerCase(Locale.ROOT);
         CompiledRule best = match(root.rules, lowerWord, null);
 
-        TrieNode node = root;
-        for (int i = lowerWord.length() - 1; i >= 0; i--) {
+        var node = root;
+        for (var i = lowerWord.length() - 1; i >= 0; i--) {
             node = node.children.get(lowerWord.charAt(i));
             if (node == null) {
                 break;
@@ -94,7 +94,7 @@ final class CompiledInflector {
     }
 
     private static CompiledRule match(List<CompiledRule> rules, String lowerWord, CompiledRule currentBest) {
-        CompiledRule best = currentBest;
+        var best = currentBest;
         for (CompiledRule rule : rules) {
             if (best != null && best.priority() < rule.priority()) {
                 continue;
@@ -137,8 +137,7 @@ final class CompiledInflector {
         private final TrieNode root = new TrieNode();
         private int priority;
 
-        private Builder() {
-        }
+        private Builder() {}
 
         public Builder addSuffixRule(String suffix, int removeLength, String append) {
             return addSuffixRule(suffix, ALWAYS, new SuffixTransform(removeLength, append));
@@ -149,8 +148,8 @@ final class CompiledInflector {
         }
 
         public Builder addSuffixRule(String suffix, WordCondition condition, Transform transform) {
-            TrieNode node = root;
-            for (int i = suffix.length() - 1; i >= 0; i--) {
+            var node = root;
+            for (var i = suffix.length() - 1; i >= 0; i--) {
                 node = node.children.computeIfAbsent(suffix.charAt(i), ignored -> new TrieNode());
             }
             node.rules.add(new CompiledRule(priority++, suffix.length(), condition, transform));
@@ -190,7 +189,7 @@ final class CompiledInflector {
     }
 
     private static final class TrieNode {
-        private final Map<Character, TrieNode> children = new HashMap<Character, TrieNode>();
-        private final List<CompiledRule> rules = new ArrayList<CompiledRule>();
+        private final Map<Character, TrieNode> children = new HashMap<>();
+        private final List<CompiledRule> rules = new ArrayList<>();
     }
 }

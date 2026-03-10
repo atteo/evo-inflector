@@ -1,6 +1,5 @@
 package org.atteo.evo.inflector;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class RegExpRule implements Rule {
@@ -19,8 +18,8 @@ class RegExpRule implements Rule {
 
     @Override
     public String getPlural(String word) {
-        StringBuffer buffer = new StringBuffer();
-        Matcher matcher = singular.matcher(word);
+        var buffer = new StringBuffer();
+        var matcher = singular.matcher(word);
         if (matcher.find()) {
             matcher.appendReplacement(buffer, plural);
             matcher.appendTail(buffer);

@@ -5,15 +5,14 @@ import static java.lang.Character.toUpperCase;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 abstract class LegacyTwoFormInflector {
-    private final List<LegacyRule> rules = new ArrayList<LegacyRule>();
+    private final List<LegacyRule> rules = new ArrayList<>();
 
     protected String getPlural(String word) {
         for (LegacyRule rule : rules) {
-            String result = rule.getPlural(word);
+            var result = rule.getPlural(word);
             if (result != null) {
                 return result;
             }
@@ -78,7 +77,7 @@ final class LegacyCategoryRule implements LegacyRule {
 
     @Override
     public String getPlural(String word) {
-        String lowerWord = word.toLowerCase();
+        var lowerWord = word.toLowerCase();
         for (String suffix : list) {
             if (lowerWord.endsWith(suffix)) {
                 if (!lowerWord.endsWith(singular)) {
@@ -102,8 +101,8 @@ final class LegacyRegExpRule implements LegacyRule {
 
     @Override
     public String getPlural(String word) {
-        StringBuffer buffer = new StringBuffer();
-        Matcher matcher = singular.matcher(word);
+        var buffer = new StringBuffer();
+        var matcher = singular.matcher(word);
         if (matcher.find()) {
             matcher.appendReplacement(buffer, plural);
             matcher.appendTail(buffer);

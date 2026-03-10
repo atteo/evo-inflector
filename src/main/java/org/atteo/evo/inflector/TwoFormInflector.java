@@ -22,11 +22,11 @@ import java.util.regex.Pattern;
 
 public abstract class TwoFormInflector {
 
-    private final List<Rule> rules = new ArrayList<Rule>();
+    private final List<Rule> rules = new ArrayList<>();
 
     protected String getPlural(String word) {
         for (Rule rule : rules) {
-            String result = rule.getPlural(word);
+            var result = rule.getPlural(word);
             if (result != null) {
                 return result;
             }

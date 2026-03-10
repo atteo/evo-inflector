@@ -27,21 +27,21 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
-public class EnglishInflectorTest {
+class EnglishInflectorTest {
     private final English inflector = new English();
 
     @Test
-    public void wiktionaryTest() throws IOException {
+    void wiktionaryTest() throws Exception {
 
-        AtomicInteger all = new AtomicInteger();
-        AtomicInteger countable = new AtomicInteger();
-        AtomicInteger correctCountable = new AtomicInteger();
-        AtomicInteger uncountable = new AtomicInteger();
-        AtomicInteger correctUncountable = new AtomicInteger();
-        AtomicInteger pluralNotAttested = new AtomicInteger();
-        AtomicInteger pluralUnknown = new AtomicInteger();
+        var all = new AtomicInteger();
+        var countable = new AtomicInteger();
+        var correctCountable = new AtomicInteger();
+        var uncountable = new AtomicInteger();
+        var correctUncountable = new AtomicInteger();
+        var pluralNotAttested = new AtomicInteger();
+        var pluralUnknown = new AtomicInteger();
 
-        FileWriter incorrectCountable = new FileWriter("reports/incorrect-countable.md");
+        var incorrectCountable = new FileWriter("reports/incorrect-countable.md");
         incorrectCountable.append("|Singular|Evo-Inflector plural|Wiktionary plurals|\n");
         incorrectCountable.append("|--------|--------------------|------------------|\n");
 
@@ -62,15 +62,15 @@ public class EnglishInflectorTest {
                         countable, correctCountable, uncountable, correctUncountable, pluralNotAttested, pluralUnknown);
             }
 
-            String calculatedPlural = inflector.getPlural(wikiNouns.get(0).singular());
+            var calculatedPlural = inflector.getPlural(wikiNouns.get(0).singular());
 
             Optional<WikiNoun> correctNoun = wikiNouns.stream()
                     .filter(noun -> noun.plurals().contains(calculatedPlural))
                     .findFirst();
 
-            boolean correct = correctNoun.isPresent();
+            var correct = correctNoun.isPresent();
 
-            WikiNoun wikiNoun = correctNoun.orElse(wikiNouns.get(0));
+            var wikiNoun = correctNoun.orElse(wikiNouns.get(0));
 
             if (wikiNoun.isUncountable()) {
                 uncountable.getAndIncrement();
@@ -97,10 +97,10 @@ public class EnglishInflectorTest {
             }
 
             try {
-                String wiktionaryPlurals = wikiNouns.stream()
+                var wiktionaryPlurals = wikiNouns.stream()
                         .flatMap(noun -> noun.plurals().stream())
                         .collect(Collectors.joining(","));
-                String ennouns = wikiNouns.stream().map(WikiNoun::ennoun).collect(Collectors.joining(","));
+                var ennouns = wikiNouns.stream().map(WikiNoun::ennoun).collect(Collectors.joining(","));
 
                 String uriEncodedSingular = URLEncoder.encode(wikiNoun.singular(), UTF_8.toString());
 
@@ -124,7 +124,7 @@ public class EnglishInflectorTest {
             AtomicInteger correctUncountable,
             AtomicInteger pluralNotAttested,
             AtomicInteger pluralUnknown) {
-        int all = countable.get() + uncountable.get() + pluralNotAttested.get() + pluralUnknown.get();
+        var all = countable.get() + uncountable.get() + pluralNotAttested.get() + pluralUnknown.get();
 
         System.out.println("");
         System.out.println("There are (" + LocalDate.now().toString() + ") " + all
@@ -145,12 +145,12 @@ public class EnglishInflectorTest {
     }
 
     private String percent(int count, int all) {
-        float percent = count * 100 / (float) all;
+        var percent = count * 100 / (float) all;
         return percent + "% (" + count + ")";
     }
 
     @Test
-    public void exampleWordList() {
+    void exampleWordList() {
         check(new String[][] {
             {"alga", "algae"},
             {"nova", "novas"},
@@ -191,7 +191,7 @@ public class EnglishInflectorTest {
     }
 
     @Test
-    public void shouldPreserveCapitalLetters() {
+    void shouldPreserveCapitalLetters() {
         check(new String[][] {
             {"Milieu", "Milieus"},
             {"NightWolf", "NightWolves"},
@@ -209,7 +209,7 @@ public class EnglishInflectorTest {
     }
 
     @Test
-    public void withCount() {
+    void withCount() {
         assertThat(inflector.getPlural("cat", 1)).isEqualTo("cat");
         assertThat(inflector.getPlural("cat", 2)).isEqualTo("cats");
 
@@ -218,7 +218,7 @@ public class EnglishInflectorTest {
     }
 
     @Test
-    public void staticMethods() {
+    void staticMethods() {
         assertThat(English.plural("sulfimide")).isEqualTo("sulfimides");
         assertThat(English.plural("semifluid", 2)).isEqualTo("semifluids");
     }

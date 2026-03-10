@@ -124,7 +124,7 @@ public class PluralizationBenchmark {
         }
 
         public String next() {
-            String word = words[index];
+            var word = words[index];
             index++;
             if (index == words.length) {
                 index = 0;

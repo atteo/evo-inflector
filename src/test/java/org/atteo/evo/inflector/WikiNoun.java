@@ -2,7 +2,6 @@ package org.atteo.evo.inflector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WikiNoun {
@@ -19,14 +18,14 @@ public class WikiNoun {
     }
 
     private void calculatePlurals(String singular, String ennoun) {
-        String[] split = ennoun.split("\\|");
+        var split = ennoun.split("\\|");
 
-        for (int i = 1; i < split.length; i++) {
+        for (var i = 1; i < split.length; i++) {
             if (split[i].startsWith("head=")) {
                 continue;
             }
 
-            Noun noun = interpretInflection(singular, split[i]);
+            var noun = interpretInflection(singular, split[i]);
 
             if (nounType == null) {
                 // first entry is the most common
@@ -40,7 +39,7 @@ public class WikiNoun {
         }
     }
 
-    static class Noun {
+    static final class Noun {
         NounType type;
         String plural;
 
@@ -129,23 +128,22 @@ public class WikiNoun {
     private static String defaultPlural(String singular) {
         if (singular.matches(".*(s|x|z|sh|ch)$")) {
             return singular + "es";
-        } else {
-            String plural = new RegExpRule("([aeiou])y$", "$1ys").getPlural(singular);
-            if (plural != null) {
-                return plural;
-            }
-            plural = new RegExpRule("y$", "ies").getPlural(singular);
-
-            if (plural != null) {
-                return plural;
-            }
-            return new RegExpRule("$", "s").getPlural(singular);
         }
+        var plural = new RegExpRule("([aeiou])y$", "$1ys").getPlural(singular);
+        if (plural != null) {
+            return plural;
+        }
+        plural = new RegExpRule("y$", "ies").getPlural(singular);
+
+        if (plural != null) {
+            return plural;
+        }
+        return new RegExpRule("$", "s").getPlural(singular);
     }
 
     public static List<WikiNoun> find(Page page) {
-        Matcher matcher = enNounPattern.matcher(page.getRevision().getText());
-        List<WikiNoun> nouns = new ArrayList<>();
+        var matcher = enNounPattern.matcher(page.getRevision().getText());
+        var nouns = new ArrayList<WikiNoun>();
 
         while (matcher.find()) {
             nouns.add(new WikiNoun(page.getTitle(), matcher.group(1)));

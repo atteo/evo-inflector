@@ -262,7 +262,7 @@ public class English extends TwoFormInflector {
     }
 
     public static void setMode(MODE mode) {
-        English newInflector = new English(mode);
+        var newInflector = new English(mode);
         inflector = newInflector;
     }
 
@@ -374,8 +374,7 @@ public class English extends TwoFormInflector {
             builder.addSuffixRule(
                     "nx",
                     CompiledInflector.and(
-                            CompiledInflector.suffixStartAtLeast(3),
-                            CompiledInflector.previousCharIn("iay")),
+                            CompiledInflector.suffixStartAtLeast(3), CompiledInflector.previousCharIn("iay")),
                     2,
                     "nges");
             builder.addCategoryRule(CATEGORY_EN_INA, 2, "ina");

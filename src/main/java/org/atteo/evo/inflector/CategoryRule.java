@@ -13,7 +13,7 @@ class CategoryRule implements Rule {
 
     @Override
     public String getPlural(String word) {
-        String lowerWord = word.toLowerCase();
+        var lowerWord = word.toLowerCase();
         for (String suffix : list) {
             if (lowerWord.endsWith(suffix)) {
                 if (!lowerWord.endsWith(singular)) {
