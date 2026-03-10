@@ -44,17 +44,17 @@ die (plural dice) - An isohedral polyhedron, usually a cube
 # Tests
 
 As part of the unit tests the results of the algorithm are compared with data from Wiktionary.
+Wiktionary is not a perfect source of data, especially for more obscure words, but it is the best we have.
 
-There are (2021-07-10) 276574 single word English nouns in the English Wiktionary of which:
+There are (2026-03-10) 345105 single word nouns in the English Wiktionary of which:
+- 68.427% (236145) are countable nouns,
+- 28.260384% (97528) are uncountable nouns,
+- for 2.9802525% (10285) nouns plural is unknown,
+- for 0.33236262% (1147) nouns plural is not attested.
 
-- 69.26971% (191582) are countable nouns,
-- 27.56839% (76247) are uncountable nouns,
-- for 2.8863885% (7983) nouns plural is unknown,
-- for 0.27551398% (762) nouns plural is not attested.
-
-Evo Inflector returns correct answer for:
-- 96.24286% (184384) of all countable nouns, see [this report](reports/incorrect-countable.md),
-- but only for 8.56296% (6529) of uncountable nouns.
+Evo Inflector returns correct answer for: 
+- 94.61559% (223430) of all countable nouns, see [this report](reports/incorrect-countable.md),
+- but only for 8.041793% (7843) of uncountable nouns.
 
 In overall it returns correct answer for 69.02782% (190913) of all nouns.
 

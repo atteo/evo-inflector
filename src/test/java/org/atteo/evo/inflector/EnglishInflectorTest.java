@@ -128,7 +128,7 @@ class EnglishInflectorTest {
 
         System.out.println("");
         System.out.println("There are (" + LocalDate.now().toString() + ") " + all
-                + " single word english nouns in the English Wiktionary of which:");
+                + " single word nouns in the English Wiktionary of which:");
         System.out.println("- " + percent(countable.get(), all) + " are countable nouns,");
         System.out.println("- " + percent(uncountable.get(), all) + " are uncountable nouns,");
         System.out.println("- for " + percent(pluralUnknown.get(), all) + " nouns plural is unknown,");
