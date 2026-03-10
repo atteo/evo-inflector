@@ -60,6 +60,14 @@ In overall it returns correct answer for 69.02782% (190913) of all nouns.
 
 # Changes
 
+## 2.0
+
+- rewrite internals around a compiled suffix-matching engine instead of repeated regex and rule-list scans
+- require JDK 17 for the main build
+- simplify and modernize rule handling while keeping the public `English.plural(...)` API
+- add JMH benchmarks comparing the new engine with the legacy implementation
+- improve throughput substantially; quick JMH runs on the benchmark suite show about 18x faster mixed-dataset throughput, about 54x faster repeated lowercase lookups, and about 27x faster repeated mixed-case lookups
+
 ## 1.3
 
 - fix ulum -> ula rule
