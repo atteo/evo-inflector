@@ -15,7 +15,6 @@ package org.atteo.evo.inflector;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -27,13 +26,10 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import org.atteo.evo.inflector.benchmarks.legacy.LegacyEnglish;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class EnglishInflectorTest {
     private static final Path INCORRECT_COUNTABLE_REPORT = Path.of("target/reports/incorrect-countable.md");
-    private static final Path LEGACY_PARITY_REPORT = Path.of("target/reports/legacy-parity.md");
 
     private final English inflector = new English();
 
@@ -213,42 +209,6 @@ class EnglishInflectorTest {
         assertThat(English.plural("semifluid", 2)).isEqualTo("semifluids");
     }
 
-    @Test
-    @Disabled("Compiled engine intentionally differs from legacy regex parity because of improved case handling")
-    void shouldMatchLegacyImplementationOnWiktionaryCorpus() throws Exception {
-        Files.createDirectories(LEGACY_PARITY_REPORT.getParent());
-
-        try (BufferedWriter report = Files.newBufferedWriter(LEGACY_PARITY_REPORT, UTF_8)) {
-            report.append("|Mode|Singular|Compiled|Legacy|\n");
-            report.append("|----|--------|--------|------|\n");
-
-            var mismatches = new AtomicInteger();
-            var checked = new AtomicInteger();
-
-            compareWithLegacy(
-                    new English(English.MODE.ENGLISH_ANGLICIZED),
-                    new LegacyEnglish(LegacyEnglish.Mode.ENGLISH_ANGLICIZED),
-                    "anglicized",
-                    checked,
-                    mismatches,
-                    report);
-
-            compareWithLegacy(
-                    new English(English.MODE.ENGLISH_CLASSICAL),
-                    new LegacyEnglish(LegacyEnglish.Mode.ENGLISH_CLASSICAL),
-                    "classical",
-                    checked,
-                    mismatches,
-                    report);
-
-            assertThat(checked.get()).isPositive();
-            if (mismatches.get() > 0) {
-                fail("Found %s compiled-vs-legacy mismatches on Wiktionary corpus; see %s"
-                        .formatted(mismatches.get(), LEGACY_PARITY_REPORT));
-            }
-        }
-    }
-
     private void check(String[][] list) {
         for (String[] pair : list) {
             check(pair[0], pair[1]);
@@ -257,40 +217,5 @@ class EnglishInflectorTest {
 
     private void check(String singular, String plural) {
         assertThat(inflector.getPlural(singular)).isEqualTo(plural);
-    }
-
-    private void compareWithLegacy(
-            English compiled,
-            LegacyEnglish legacy,
-            String mode,
-            AtomicInteger checked,
-            AtomicInteger mismatches,
-            BufferedWriter report)
-            throws IOException {
-        new WiktionaryCorpus().forEach(wikiNouns -> {
-            var singular = wikiNouns.get(0).singular();
-            var compiledPlural = compiled.getPlural(singular);
-            var legacyPlural = legacy.plural(singular);
-
-            checked.incrementAndGet();
-            if (compiledPlural.equals(legacyPlural)) {
-                return;
-            }
-
-            mismatches.incrementAndGet();
-            try {
-                report.append('|')
-                        .append(mode)
-                        .append('|')
-                        .append(singular)
-                        .append('|')
-                        .append(compiledPlural)
-                        .append('|')
-                        .append(legacyPlural)
-                        .append("|\n");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
     }
 }

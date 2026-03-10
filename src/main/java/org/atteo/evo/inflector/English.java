@@ -29,7 +29,7 @@ package org.atteo.evo.inflector;
  * An Algorithmic Approach to English Pluralization</a> by Damian Conway.
  * </p>
  */
-public class English extends TwoFormInflector {
+public class English {
     public enum MODE {
         ENGLISH_ANGLICIZED,
         ENGLISH_CLASSICAL
@@ -206,7 +206,6 @@ public class English extends TwoFormInflector {
      * @param word word in singular form
      * @return plural form of the word
      */
-    @Override
     public String getPlural(String word) {
         return engine.pluralize(word);
     }

@@ -3,7 +3,6 @@ package org.atteo.evo.inflector.benchmarks;
 import java.util.concurrent.TimeUnit;
 
 import org.atteo.evo.inflector.English;
-import org.atteo.evo.inflector.benchmarks.legacy.LegacyEnglish;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -24,8 +23,8 @@ import org.openjdk.jmh.annotations.Warmup;
 public class PluralizationBenchmark {
     @State(Scope.Benchmark)
     public static class EngineState {
-        private final English compiled = new English();
-        private final LegacyEnglish legacy = new LegacyEnglish();
+        private final English anglicized = new English();
+        private final English classical = new English(English.MODE.ENGLISH_CLASSICAL);
     }
 
     @State(Scope.Thread)
@@ -146,32 +145,32 @@ public class PluralizationBenchmark {
     }
 
     @Benchmark
-    public String compiledDataset(EngineState state, DatasetState dataset) {
-        return state.compiled.getPlural(dataset.next());
+    public String anglicizedDataset(EngineState state, DatasetState dataset) {
+        return state.anglicized.getPlural(dataset.next());
     }
 
     @Benchmark
-    public String legacyDataset(EngineState state, DatasetState dataset) {
-        return state.legacy.plural(dataset.next());
+    public String classicalDataset(EngineState state, DatasetState dataset) {
+        return state.classical.getPlural(dataset.next());
     }
 
     @Benchmark
-    public String compiledRepeatedLowercase(EngineState state, RepeatedState repeated) {
-        return state.compiled.getPlural(repeated.lowercaseWord);
+    public String anglicizedRepeatedLowercase(EngineState state, RepeatedState repeated) {
+        return state.anglicized.getPlural(repeated.lowercaseWord);
     }
 
     @Benchmark
-    public String legacyRepeatedLowercase(EngineState state, RepeatedState repeated) {
-        return state.legacy.plural(repeated.lowercaseWord);
+    public String classicalRepeatedLowercase(EngineState state, RepeatedState repeated) {
+        return state.classical.getPlural(repeated.lowercaseWord);
     }
 
     @Benchmark
-    public String compiledRepeatedMixedCase(EngineState state, RepeatedState repeated) {
-        return state.compiled.getPlural(repeated.mixedCaseWord);
+    public String anglicizedRepeatedMixedCase(EngineState state, RepeatedState repeated) {
+        return state.anglicized.getPlural(repeated.mixedCaseWord);
     }
 
     @Benchmark
-    public String legacyRepeatedMixedCase(EngineState state, RepeatedState repeated) {
-        return state.legacy.plural(repeated.mixedCaseWord);
+    public String classicalRepeatedMixedCase(EngineState state, RepeatedState repeated) {
+        return state.classical.getPlural(repeated.mixedCaseWord);
     }
 }

@@ -1,6 +1,5 @@
 [![SWUbanner](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
 
-[![Build Status](https://travis-ci.org/atteo/evo-inflector.svg)](https://travis-ci.org/atteo/evo-inflector)
 [![Coverage Status](https://img.shields.io/coveralls/atteo/evo-inflector.svg)](https://coveralls.io/r/atteo/evo-inflector)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.atteo/evo-inflector/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.atteo/evo-inflector)
 
@@ -52,21 +51,22 @@ There are (2026-03-10) 345105 single word nouns in the English Wiktionary of whi
 - for 2.9802525% (10285) nouns plural is unknown,
 - for 0.33236262% (1147) nouns plural is not attested.
 
-Evo Inflector returns correct answer for: 
-- 94.61559% (223430) of all countable nouns, see [this report](reports/incorrect-countable.md),
+Evo Inflector returns correct answer for:
+- 94.61559% (223430) of all countable nouns, see `target/reports/incorrect-countable.md`,
 - but only for 8.041793% (7843) of uncountable nouns.
 
-In overall it returns correct answer for 69.02782% (190913) of all nouns.
+In overall it returns correct answer for 67.01526% (231273) of all nouns.
 
 # Changes
 
 ## 2.0
 
 - rewrite internals around a compiled suffix-matching engine instead of repeated regex and rule-list scans
+- remove the old regexp-based engine and benchmark-only legacy copy
 - require JDK 17 for the main build
 - simplify and modernize rule handling while keeping the public `English.plural(...)` API
-- add JMH benchmarks comparing the new engine with the legacy implementation
-- improve throughput substantially; quick JMH runs on the benchmark suite show about 18x faster mixed-dataset throughput, about 54x faster repeated lowercase lookups, and about 27x faster repeated mixed-case lookups
+- add JMH benchmarks for anglicized and classical compiled modes
+- improve throughput substantially; the compiled engine delivered about 18x faster mixed-dataset throughput, about 54x faster repeated lowercase lookups, and about 27x faster repeated mixed-case lookups versus the old regexp engine during the migration benchmarks
 
 ## 1.3
 
