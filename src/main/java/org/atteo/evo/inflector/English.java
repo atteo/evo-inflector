@@ -15,7 +15,7 @@ package org.atteo.evo.inflector;
 
 /**
  * Transforms English words from singular to plural form.
- * <p>
+ *
  * Examples:
  * <pre>
  *    English.plural("word") = "words";
@@ -23,15 +23,23 @@ package org.atteo.evo.inflector;
  *    English.plural("cat", 1) = "cat";
  *    English.plural("cat", 2) = "cats";
  * </pre>
- * </p>
- * <p>
+ *
  * Based on <a href="http://www.csse.monash.edu.au/~damian/papers/HTML/Plurals.html">
  * An Algorithmic Approach to English Pluralization</a> by Damian Conway.
- * </p>
  */
 public class English {
+    /**
+     * Selects which pluralization rule set to use.
+     */
     public enum MODE {
+        /**
+         * Uses the anglicized plural forms where alternatives exist.
+         */
         ENGLISH_ANGLICIZED,
+
+        /**
+         * Uses the classical plural forms where alternatives exist.
+         */
         ENGLISH_CLASSICAL
     }
 
@@ -192,10 +200,18 @@ public class English {
 
     private final CompiledInflector engine;
 
+    /**
+     * Creates an inflector using anglicized pluralization rules.
+     */
     public English() {
         this(MODE.ENGLISH_ANGLICIZED);
     }
 
+    /**
+     * Creates an inflector for the selected pluralization mode.
+     *
+     * @param mode pluralization rule set to use
+     */
     public English(MODE mode) {
         engine = mode == MODE.ENGLISH_CLASSICAL ? CLASSICAL_ENGINE : ANGLICIZED_ENGINE;
     }
@@ -226,14 +242,14 @@ public class English {
 
     /**
      * Returns plural form of the given word.
-     * <p>
+     *
      * For instance:
      * <pre>
      * {@code
      * English.plural("cat") == "cats";
      * }
      * </pre>
-     * </p>
+     *
      * @param word word in singular form
      * @return plural form of given word
      */
@@ -243,7 +259,7 @@ public class English {
 
     /**
      * Returns singular or plural form of the word based on count.
-     * <p>
+     *
      * For instance:
      * <pre>
      * {@code
@@ -251,7 +267,7 @@ public class English {
      * English.plural("cat", 2) == "cats";
      * }
      * </pre>
-     * </p>
+     *
      * @param word word in singular form
      * @param count word count
      * @return form of the word correct for given count
@@ -260,6 +276,11 @@ public class English {
         return inflector.getPlural(word, count);
     }
 
+    /**
+     * Sets the global pluralization mode used by the static helper methods.
+     *
+     * @param mode pluralization rule set to use for static calls
+     */
     public static void setMode(MODE mode) {
         var newInflector = new English(mode);
         inflector = newInflector;
