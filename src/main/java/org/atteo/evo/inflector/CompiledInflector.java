@@ -76,7 +76,7 @@ final class CompiledInflector {
 
     public String pluralize(String word) {
         var lowerWord = word.toLowerCase(Locale.ROOT);
-        CompiledRule best = match(root.rules, lowerWord, null);
+        var best = match(root.rules, lowerWord, null);
 
         var node = root;
         for (var i = lowerWord.length() - 1; i >= 0; i--) {
@@ -95,7 +95,7 @@ final class CompiledInflector {
 
     private static CompiledRule match(List<CompiledRule> rules, String lowerWord, CompiledRule currentBest) {
         var best = currentBest;
-        for (CompiledRule rule : rules) {
+        for (var rule : rules) {
             if (best != null && best.priority() < rule.priority()) {
                 continue;
             }
@@ -124,7 +124,7 @@ final class CompiledInflector {
 
     public static WordCondition and(WordCondition... conditions) {
         return (lowerWord, suffixStart) -> {
-            for (WordCondition condition : conditions) {
+            for (var condition : conditions) {
                 if (!condition.matches(lowerWord, suffixStart)) {
                     return false;
                 }
@@ -182,7 +182,7 @@ final class CompiledInflector {
 
         private static void sortRules(TrieNode node) {
             node.rules.sort((left, right) -> Integer.compare(left.priority(), right.priority()));
-            for (TrieNode child : node.children.values()) {
+            for (var child : node.children.values()) {
                 sortRules(child);
             }
         }
