@@ -1,8 +1,5 @@
 [![SWUbanner](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
 
-[![Coverage Status](https://img.shields.io/coveralls/atteo/evo-inflector.svg)](https://coveralls.io/r/atteo/evo-inflector)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.atteo/evo-inflector/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.atteo/evo-inflector)
-
 # About
 
 Evo Inflector implements English pluralization algorithm based on ["Damian Conway's"](https://en.wikipedia.org/wiki/Damian_Conway) paper ["An Algorithmic Approach to English Pluralization"](http://www.csse.monash.edu.au/~damian/papers/HTML/Plurals.html).
