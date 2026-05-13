@@ -41,7 +41,7 @@ public class EnglishInflectorTest {
         AtomicInteger pluralNotAttested = new AtomicInteger();
         AtomicInteger pluralUnknown = new AtomicInteger();
 
-        FileWriter incorrectCountable = new FileWriter("reports/incorrect-countable.md");
+        FileWriter incorrectCountable = new FileWriter("target/incorrect-countable.md");
         incorrectCountable.append("|Singular|Evo-Inflector plural|Wiktionary plurals|\n");
         incorrectCountable.append("|--------|--------------------|------------------|\n");
 
