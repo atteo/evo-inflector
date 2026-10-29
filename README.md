@@ -10,14 +10,14 @@ It is used by many high profile projects like [Spring and JetBrains](https://mvn
 The usage is pretty simple:
 
 ```java
-English.plural("word") == "words"
+String plural = English.plural("word"); // "words"
 ```
 
 Additionally you can use provide a required count to select singular or plural form automatically:
 
 ```java
-English.plural("foot", 1)) == "foot"
-English.plural("foot", 2)) == "feet"
+String singularFoot = English.plural("foot", 1); // "foot"
+String pluralFoot = English.plural("foot", 2); // "feet"
 ```
 
 # Features
